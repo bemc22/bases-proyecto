@@ -16,7 +16,7 @@ mysql.init_app(app)
 
 @app.route('/')
 def inicio():
-    return render_template('header.html.jinja')
+    return render_template('menu.html.jinja')
 
 @app.route('/<nombre_tabla>')
 def tabla(nombre_tabla):
