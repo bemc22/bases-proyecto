@@ -5,7 +5,8 @@ from consultas import  *
 app = Flask(__name__)
 
 # configuracion de conexion
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgres://qowtdwog:eXh8ZCIrCaJXQmjTJvRx_Ukv3uvmYG7A@lallah.db.elephantsql.com:5432/qowtdwog"
+url = "postgres://qowtdwog:eXh8ZCIrCaJXQmjTJvRx_Ukv3uvmYG7A@lallah.db.elephantsql.com:5432/qowtdwog"
+app.config['SQLALCHEMY_DATABASE_URI'] = url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
