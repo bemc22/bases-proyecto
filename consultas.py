@@ -1,16 +1,18 @@
-from flaskext.mysql import MySQL
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import  text
+from app import db
 
 
-def consultar(nombre_tabla, cursor):
-    consulta = "SELECT * FROM " + nombre_tabla
-    cursor.execute(consulta)
+def consultar(nombre_tabla):
+    consulta = text("SELECT * FROM " + nombre_tabla)
+    data = db.engine.execute(consulta)
+    data = data.fetchall()
 
-    data = cursor.fetchall()
-
-    consulta = "SHOW COLUMNS FROM " + nombre_tabla
-    cursor.execute(consulta)
-    nombres = ()
-    for row in cursor.fetchall():
-        nombres += (row[0],)
+    consulta = text("SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = " +"'" + nombre_tabla + "'")
+    resul = db.engine.execute(consulta)
+    resul = resul.fetchall()
+    nombres = []
+    for row in resul:
+        nombres += row
 
     return data, nombres
