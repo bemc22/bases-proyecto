@@ -2,6 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import  text
 from app import db
 
+# Comentario
 
 def consultar(nombre_tabla):
     consulta = text("SELECT * FROM " + nombre_tabla)
