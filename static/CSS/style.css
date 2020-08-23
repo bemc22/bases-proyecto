@@ -1,0 +1,10 @@
+.fondo{
+  height: 100vh;
+  align-content: center;
+}
+
+.login{
+  margin-top: auto;
+  margin-bottom: auto;
+  height: 380px;
+}
