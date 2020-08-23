@@ -4,14 +4,14 @@
 
 {% block body %}
 
-
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">Tablas</a>
+  <a class="navbar-brand" href="{{ url_for('inicio') }}">Tablas</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav">
+
+    <ul class="navbar-nav mr-auto">
       <li class="nav-item">
         <a class="nav-link" href="{{ url_for('tabla',nombre_tabla='persona') }}">Persona</a>
       </li>
@@ -19,6 +19,14 @@
         <a class="nav-link" href="{{ url_for('tabla',nombre_tabla='carrera') }}">Carrera</a>
       </li>
     </ul>
+
+    <ul class="navbar-nav mr-2">
+      <a class="nav-link" href="#">{{session["rol"]}}</a>
+    </ul>
+
+    <form action="{{url_for('logout')}}" method="POST" class="form-inline my-2 my-lg-0">
+      <button class="btn btn-outline-danger mr-sm-2 my-2 my-sm-0" type="submit"><i class="fas fa-sign-out-alt"></i> Salir </button>
+    </form>
   </div>
 </nav>
 

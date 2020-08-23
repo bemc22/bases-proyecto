@@ -14,13 +14,16 @@ db = SQLAlchemy(app)
 
 @app.route('/')
 def inicio():
+
     if "rol" in session:
         return render_template('menu.html.jinja')
     else:
         return render_template('login.html.jinja')
 
+
 @app.route('/login', methods=['POST'])
 def login():
+
     datos = input2data(["usuario", "clave", "rol"])
     consulta = text("SELECT * FROM usuario_"+datos["rol"]+" WHERE nombre = '"+datos["usuario"]+"' AND clave = '"+datos["clave"]+"'")
     data = db.engine.execute(consulta)
@@ -31,6 +34,15 @@ def login():
     else:
         flash("El usuario y la contraseña no coinciden")
     return redirect(url_for('inicio'))
+
+
+@app.route('/logout', methods=['post'])
+def logout():
+
+    if 'rol' in session:
+        session.clear()
+    return redirect(url_for('inicio'))
+
 
 
 @app.route('/<nombre_tabla>')

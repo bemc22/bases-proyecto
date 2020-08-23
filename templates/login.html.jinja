@@ -4,59 +4,76 @@
 
 {% block body %}
 
-  <div class="container fondo">
-    <div class="d-flex justify-content-center h-100">
-      <div class="card login shadow-lg bg-secundary">
-        <form action="{{url_for('login')}}" method="post">
-          <div class="card-header p-0">
-            <div class="btn-group btn-group-toggle" data-toggle="buttons">
-              <label class="btn btn-info active">
-                <input type="radio" name="rol" value="admin" autocomplete="off" checked> Admin
-              </label>
-              <label class="btn btn-info">
-                <input type="radio" name="rol" value="auxiliar" autocomplete="off"> Auxiliar
-              </label>
-              <label class="btn btn-info">
-                <input type="radio" name="rol" value="profesor" autocomplete="off"> Profesor
-              </label>
-              <label class="btn btn-info">
-                <input type="radio" name="rol" value="estudiante" autocomplete="off"> Estudiante
-              </label>
-            </div>
-          </div>
-          <div class="card-header">
-            <h3 class="m-0">Bienvenido</h3>
-          </div>
-          <div class="card-body mx-auto">
-              <div class="input-group form-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="fas fa-user"></i></span>
-                </div>
-                <input type="text" class="form-control" placeholder="username" name="usuario">
+<div class="container fondo">
 
-              </div>
-              <div class="input-group form-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="fas fa-key"></i></span>
-                </div>
-                <input type="password" class="form-control" placeholder="clave" name="clave">
-              </div>
-              <div class="form-group">
-                <button type="submit" class="btn btn-info btn-block">Ingresar</button>
-              </div>
+  {% with mensajes = get_flashed_messages() %}
+    {% if mensajes %}
+      {% for msg in mensajes %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <strong>Error de inicio: </strong> {{msg}}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <div class="d-flex justify-content-center h-100">
+    <div class="card my-auto shadow-lg bg-secundary">
+      <form action="{{url_for('login')}}" method="post">
+        <div class="card-header p-0">
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-info active">
+              <input type="radio" name="rol" value="admin" autocomplete="off" checked> Admin
+            </label>
+            <label class="btn btn-info">
+              <input type="radio" name="rol" value="auxiliar" autocomplete="off"> Auxiliar
+            </label>
+            <label class="btn btn-info">
+              <input type="radio" name="rol" value="profesor" autocomplete="off"> Profesor
+            </label>
+            <label class="btn btn-info">
+              <input type="radio" name="rol" value="estudiante" autocomplete="off"> Estudiante
+            </label>
           </div>
-        </form>
-        <div class="card-footer">
-          <div class="d-flex justify-content-center links">
-            ¿Primera vez ingresando?
+        </div>
+
+        <div class="card-header">
+          <h3 class="m-0">Inicio de Sesion</h3>
+        </div>
+
+        <div class="card-body mx-auto">
+          <div class="input-group form-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fas fa-user"></i></span>
+            </div>
+            <input type="text" class="form-control" placeholder="username" name="usuario">
           </div>
-          <div class="d-flex justify-content-center">
-            <a href="#">Consulta que servicios ofrecemos!!</a>
+
+          <div class="input-group form-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fas fa-key"></i></span>
+            </div>
+              <input type="password" class="form-control" placeholder="clave" name="clave">
           </div>
+
+          <div class="form-group">
+            <button type="submit" class="btn btn-info btn-block">Ingresar</button>
+          </div>
+        </div>
+      </form>
+
+      <div class="card-footer">
+        <div class="d-flex justify-content-center links">
+        ¿Primera vez ingresando?
+        </div>
+        <div class="d-flex justify-content-center">
+          <a href="#">Consulta que servicios ofrecemos!!</a>
         </div>
       </div>
     </div>
-
+  </div>
 </div>
 
 {% endblock %}
