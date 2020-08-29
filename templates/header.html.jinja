@@ -1,41 +1,159 @@
 {% extends 'base.html.jinja' %}
 
-{% block title %} Galea database {% endblock %}
-
 {% block body %}
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="{{ url_for('inicio') }}">Tablas</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
+<div class="wrapper">
+  <nav id="sidebar" class="active">
 
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('tabla',nombre_tabla='persona') }}">Persona</a>
+    <div class="sidebar-header" id="sidebarCollapse">
+      <h3>Bienvenido {{session['rol']}} </h3>
+      <strong><i class="fas fa-align-justify"></i></strong>
+    </div>
+
+
+    <ul class="list-unstyled components">
+
+    <li class="actual">
+      <a href="#">
+        <i class="fas fa-home"></i>
+        <span> Inicio </span>
+      </a>
+    </li>
+
+
+    {% if session['rol'] == 'admin' %}
+      <li>
+        <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+          <i class="fas fa-users"></i>
+          <span> Personal </span>
+        </a>
+        <ul class="collapse list-unstyled" id="homeSubmenu">
+          <li>
+            <a href="#"><i class="fas fa-user-tie"></i><span class="pl-2"> Profesores </span></a>
+          </li>
+          <li>
+            <a href="#"><i class="fas fa-user-astronaut"></i><span class="pl-2"> Auxiliares </span></a>
+          </li>
+        </ul>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('tabla',nombre_tabla='carrera') }}">Carrera</a>
+      <li>
+        <a href="#">
+          <i class="fas fa-dice"></i>
+          <span> Lúdicas </span>
+        </a>
       </li>
+      <li>
+        <a href="#">
+          <i class="fas fa-video"></i>
+          <span> Sesiones </span>
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <i class="fas fa-chalkboard-teacher"></i>
+          <span> Capacitaciones </span>
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <i class="fas fa-chart-pie"></i>
+          <span> Reportes </span>
+        </a>
+      </li>
+    {% endif %}
+
+
+    {% if session['rol'] == 'auxiliar' %}
+      <li>
+        <a href="#">
+          <i class="fas fa-video"></i>
+          <span> Sesiones </span>
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <i class="fas fa-chalkboard-teacher"></i>
+          <span> Capacitaciones </span>
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <i class="fas fa-chart-pie"></i>
+          <span> Estadísticas </span>
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <i class="fas fa-dice"></i>
+          <span> Lecturas Lúdicas </span>
+        </a>
+      </li>
+    {% endif %}
+
+    {% if session['rol'] == 'profesor' %}
+      <li>
+        <a href="#">
+          <i class="fas fa-list-alt"></i>
+          <span> Mis cursos </span>
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <i class="fas fa-video"></i>
+          <span> Mis sesiones </span>
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <i class="fas fa-dice"></i>
+          <span> Catálogo Lúdicas </span>
+        </a>
+      </li>
+
+    {% endif %}
+
+      <li>
+        <a href="#">
+          <i class="fas fa-question"></i>
+          <span> P&R </span>
+        </a>
+      </li>
+
     </ul>
 
-    <ul class="navbar-nav mr-2">
-      <a class="nav-link" href="#">{{session["rol"]}}</a>
-    </ul>
+      <ul class="list-unstyled CTAs">
+          <li>
+              <a href="https://bootstrapious.com/tutorial/files/sidebar.zip" class="download">Siguenos Instagram</a>
+          </li>
+          <li>
+              <a href="https://bootstrapious.com/p/bootstrap-sidebar" class="article">Unete a Facebook</a>
+          </li>
+      </ul>
+  </nav>
 
-    <form action="{{url_for('logout')}}" method="POST" class="form-inline my-2 my-lg-0">
-      <button class="btn btn-outline-danger mr-sm-2 my-2 my-sm-0" type="submit"><i class="fas fa-sign-out-alt"></i> Salir </button>
-    </form>
-  </div>
-</nav>
 
+    <div id="content">
 
-<div class="jumbotron p-3">
-  <div class="well text-container">
-  </div>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <img src="{{url_for('static', filename='IMG/logo.png')}}" height="40" class="d-inline-block align-top mx-auto" alt="" loading="lazy">
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="nav navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fas fa-user-cog"></i> Mi perfil</a>
+              </li>
+              <form action="{{url_for('logout')}}" method="POST" class="form-inline my-2 my-lg-0">
+                <button class="btn btn-outline-danger ml-sm-3 my-sm-0" type="submit"><i class="fas fa-sign-out-alt"></i> Salir </button>
+              </form>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      {% block contenido %} {% endblock %}
+
+    </div>
 </div>
-
-
 
 {% endblock %}

@@ -38,7 +38,7 @@ def login():
 
 @app.route('/logout', methods=['post'])
 def logout():
-
+    
     if 'rol' in session:
         session.clear()
     return redirect(url_for('inicio'))
