@@ -1,9 +1,8 @@
-{% extends 'base.html.jinja' %}
-{%include 'header.html.jinja' %}
+{%extends 'header.html.jinja' %}
 
 {% block title %} Home {% endblock %}
 
-{% block body %}
+{% block contenido %}
 
 <div class="">
 
@@ -21,7 +20,10 @@
                 {% for columna in nombres %}
                   <th>{{columna}}</th>
                 {% endfor %}
+
+                <th style="text-align: center">Actions</th>
               </tr>
+
             </thead>
             <tbody>
               {% for row in data %}
@@ -30,11 +32,55 @@
                 {% for item in row %}
                   <td>{{item}}</td>
                 {% endfor %}
+
+                <td style="text-align: center">
+
+                  <a href="" class="btn btn-outline-primary btn-xs" data-toggle="modal" data-target="">Editar</a>
+
+                  <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="">
+                    Eliminar
+                  </button>
+
+                </td>
               </tr>
               {% endfor %}
             </tbody>
           </table>
         </div>
+
+
+        <div id="mymodal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">Agregar Usuario</h4>
+              </div>
+              <div class="modal-body">
+                {#  {{url_for('insert')}}  #}
+                <form action="" method="POST">
+
+                  {% for col in nombres %}
+                    <div class="form-group">
+                      <label>{{col}}</label>
+                      <input type="text" class="form-control" name="{{col}}" required="1">
+                    </div>
+                  {% endfor %}
+
+
+
+                  <div class="form-group">
+                    <button class="btn btn-primary" type="submit">Agregar Usuario</button>
+                  </div>
+
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>

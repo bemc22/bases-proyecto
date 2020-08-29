@@ -38,7 +38,7 @@ def login():
 
 @app.route('/logout', methods=['post'])
 def logout():
-    
+
     if 'rol' in session:
         session.clear()
     return redirect(url_for('inicio'))
@@ -47,6 +47,7 @@ def logout():
 
 @app.route('/<nombre_tabla>')
 def tabla(nombre_tabla):
+
 
     data , nombres =consultar(nombre_tabla)
     return render_template('crud.html.jinja' , data=data, nombres=nombres, nombre_tabla=nombre_tabla)
