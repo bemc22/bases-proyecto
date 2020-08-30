@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, session, redirect, flash
+from flask import Flask, render_template, url_for, session, redirect, flash, request
 from flask_sqlalchemy import SQLAlchemy
 
 from consultas import  *
@@ -23,7 +23,6 @@ def inicio():
 
 @app.route('/login', methods=['POST'])
 def login():
-
     datos = input2data(["usuario", "clave", "rol"])
     consulta = text("SELECT * FROM usuario_"+datos["rol"]+" WHERE nombre = '"+datos["usuario"]+"' AND clave = '"+datos["clave"]+"'")
     data = db.engine.execute(consulta)
@@ -38,7 +37,6 @@ def login():
 
 @app.route('/logout', methods=['post'])
 def logout():
-
     if 'rol' in session:
         session.clear()
     return redirect(url_for('inicio'))
@@ -47,10 +45,28 @@ def logout():
 
 @app.route('/<nombre_tabla>')
 def tabla(nombre_tabla):
-
-
     data , nombres =consultar(nombre_tabla)
     return render_template('crud.html.jinja' , data=data, nombres=nombres, nombre_tabla=nombre_tabla)
+
+
+@app.route('/insert/<nombre_tabla>' , methods=['POST'])
+def insert(nombre_tabla):
+    if request.method == 'POST':
+        columnas = []
+        values = []
+        for i in request.form:
+            columnas.append(i)
+            values.append(request.form[i])
+
+        insertar(nombre_tabla,columnas,values)
+    return redirect(url_for('tabla' , nombre_tabla = nombre_tabla))
+
+@app.route('/delete/<nombre_tabla>/<id>/<name_id>' , methods=['GET','POST'])
+def delete(nombre_tabla, id,name_id):
+    eliminar(nombre_tabla,id,name_id)
+    return redirect(url_for('tabla' , nombre_tabla = nombre_tabla))
+
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

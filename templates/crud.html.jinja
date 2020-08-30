@@ -12,13 +12,13 @@
       <div class="col lg-12">
         <div class="jumbotron p-3">
           <h2>CRUD Tabla <b>{{nombre_tabla}} </b>
-          <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#mymodal">Agregar</button></h2>
+            <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#mymodal">Agregar</button></h2>
           <br>
           <table class="table table-hover table-ligth">
             <thead class="thead-dark">
               <tr>
                 {% for columna in nombres %}
-                  <th>{{columna}}</th>
+                <th>{{columna}}</th>
                 {% endfor %}
 
                 <th style="text-align: center">Actions</th>
@@ -30,16 +30,39 @@
               <tr>
 
                 {% for item in row %}
-                  <td>{{item}}</td>
+                <td>{{item}}</td>
                 {% endfor %}
 
                 <td style="text-align: center">
 
                   <a href="" class="btn btn-outline-primary btn-xs" data-toggle="modal" data-target="">Editar</a>
 
-                  <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="">
+                  <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#confirm_eliminar{{row.0}}">
                     Eliminar
                   </button>
+
+                  {# confirm_eliminar{{persona.id}} #}
+
+                  <div class="modal fade" id="confirm_eliminar{{row.0}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="">Confirmar Eliminación</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          Esta seguro que desea eliminar este usuario?
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancelar</button>
+                          {# /delete/{{persona.id}} #}
+                          <a href="/delete/{{nombre_tabla}}/{{row.0}}/{{nombres.0}}" class="btn btn-danger btn-xs">Confirmar</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
                 </td>
               </tr>
@@ -57,13 +80,13 @@
               </div>
               <div class="modal-body">
                 {#  {{url_for('insert')}}  #}
-                <form action="" method="POST">
+                <form action="{{url_for('insert', nombre_tabla=nombre_tabla)}}" method="POST">
 
                   {% for col in nombres %}
-                    <div class="form-group">
-                      <label>{{col}}</label>
-                      <input type="text" class="form-control" name="{{col}}" required="1">
-                    </div>
+                  <div class="form-group">
+                    <label>{{col}}</label>
+                    <input type="text" class="form-control" name="{{col}}" required="1">
+                  </div>
                   {% endfor %}
 
 
@@ -85,4 +108,4 @@
     </div>
   </div>
 
-{% endblock %}
+  {% endblock %}
