@@ -25,11 +25,11 @@ def insertar(nombre_tabla, columnas,values):
     db.engine.execute(insert_into)
 
     print(insert_into)
-    return 0
+    return
 
 def eliminar(nombre_tabla,id,name_id):
     eliminacion = "DELETE FROM %s WHERE %s = %s" %(nombre_tabla,name_id,id)
     db.engine.execute(eliminacion)
     print(eliminacion)
 
-    return 0
+    return
