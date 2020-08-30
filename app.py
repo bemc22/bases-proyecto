@@ -2,7 +2,7 @@ from flask import Flask, render_template, url_for, session, redirect, flash, req
 from flask_sqlalchemy import SQLAlchemy
 
 from crud import  *
-from formularios import *
+from funciones import *
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
@@ -35,7 +35,7 @@ def login():
     return redirect(url_for('inicio'))
 
 
-@app.route('/logout', methods=['post'])
+@app.route('/logout', methods=['POST'])
 def logout():
     if 'rol' in session:
         session.clear()
@@ -52,12 +52,7 @@ def tabla(nombre_tabla):
 @app.route('/insert/<nombre_tabla>' , methods=['POST'])
 def insert(nombre_tabla):
     if request.method == 'POST':
-        columnas = []
-        values = []
-        for i in request.form:
-            columnas.append(i)
-            values.append(request.form[i])
-
+        columnas, values = form2data(request.form)
         insertar(nombre_tabla,columnas,values)
     return redirect(url_for('tabla' , nombre_tabla = nombre_tabla))
 
@@ -69,13 +64,7 @@ def delete(nombre_tabla, id,name_id):
 @app.route('/update/<nombre_tabla>' , methods=['GET','POST'])
 def update(nombre_tabla):
     if request.method == 'POST':
-        columnas = []
-        values = []
-        for i in request.form:
-            columnas.append(i)
-            values.append(request.form[i])
-
-
+        columnas, values = form2data(request.form)
         editar(nombre_tabla,columnas,values)
 
     return redirect(url_for('tabla' , nombre_tabla = nombre_tabla))
