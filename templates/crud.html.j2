@@ -35,7 +35,7 @@
 
                 <td style="text-align: center">
 
-                  <a href="" class="btn btn-outline-primary btn-xs" data-toggle="modal" data-target="">Editar</a>
+                  <a href="" class="btn btn-outline-primary btn-xs" data-toggle="modal" data-target="#modaledit{{row.0}}">Editar</a>
 
                   <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#confirm_eliminar{{row.0}}">
                     Eliminar
@@ -53,7 +53,7 @@
                           </button>
                         </div>
                         <div class="modal-body">
-                          Esta seguro que desea eliminar este usuario?
+                          Esta seguro que desea eliminar?
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancelar</button>
@@ -66,6 +66,36 @@
 
                 </td>
               </tr>
+
+              <div id="modaledit{{row.0}}" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title">Actualizar Información</h4>
+                    </div>
+                    <div class="modal-body">
+                      {# {{url_for('update')}} #}
+                      <form action="{{url_for('update' ,nombre_tabla = nombre_tabla)}}" method="POST">
+                        <input type="hidden" name="{{nombres.0}}" value="{{row.0}}">
+                        {% for col in nombres[1:nombres|length] %}
+                        <div class="form-group">
+                          <label>{{col}}</label>
+                          <input type="text" class="form-control" name="{{col}}" value="{{row[loop.index]}}" required="1">
+                        </div>
+                        {% endfor %}
+                        <div class="form-group">
+                          <button class="btn btn-primary" type="submit">Actualizar</button>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
               {% endfor %}
             </tbody>
           </table>
@@ -76,7 +106,7 @@
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h4 class="modal-title">Agregar Usuario</h4>
+                <h4 class="modal-title">Agregar {{nombre_tabla}}</h4>
               </div>
               <div class="modal-body">
                 {#  {{url_for('insert')}}  #}
@@ -92,7 +122,7 @@
 
 
                   <div class="form-group">
-                    <button class="btn btn-primary" type="submit">Agregar Usuario</button>
+                    <button class="btn btn-primary" type="submit">Agregar</button>
                   </div>
 
                 </form>

@@ -66,6 +66,20 @@ def delete(nombre_tabla, id,name_id):
     eliminar(nombre_tabla,id,name_id)
     return redirect(url_for('tabla' , nombre_tabla = nombre_tabla))
 
+@app.route('/update/<nombre_tabla>' , methods=['GET','POST'])
+def update(nombre_tabla):
+    if request.method == 'POST':
+        columnas = []
+        values = []
+        for i in request.form:
+            columnas.append(i)
+            values.append(request.form[i])
+
+
+        editar(nombre_tabla,columnas,values)
+
+    return redirect(url_for('tabla' , nombre_tabla = nombre_tabla))
+
 
 
 if __name__ == '__main__':
