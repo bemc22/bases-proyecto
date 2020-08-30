@@ -16,9 +16,9 @@ db = SQLAlchemy(app)
 def inicio():
 
     if "rol" in session:
-        return render_template('menu.html.jinja')
+        return render_template('menu.html.j2')
     else:
-        return render_template('login.html.jinja')
+        return render_template('login.html.j2')
 
 
 @app.route('/login', methods=['POST'])
@@ -46,7 +46,7 @@ def logout():
 @app.route('/<nombre_tabla>')
 def tabla(nombre_tabla):
     data , nombres =consultar(nombre_tabla)
-    return render_template('crud.html.jinja' , data=data, nombres=nombres, nombre_tabla=nombre_tabla)
+    return render_template('crud.html.j2' , data=data, nombres=nombres, nombre_tabla=nombre_tabla)
 
 
 @app.route('/insert/<nombre_tabla>' , methods=['POST'])
