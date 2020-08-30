@@ -1,7 +1,7 @@
 from flask import Flask, render_template, url_for, session, redirect, flash, request
 from flask_sqlalchemy import SQLAlchemy
 
-from consultas import  *
+from crud import  *
 from formularios import *
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
