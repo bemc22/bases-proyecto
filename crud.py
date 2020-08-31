@@ -37,4 +37,11 @@ def editar(nombre_tabla,columnas,values):
     return
 
 # Para vistas:
+def proced_vista(nombre_vista, values, funcion):
+    valores =  "(" + ", ".join([ "'" + str(i) + "'" for i in values]) + ")"
+    procedimiento = "CALL %s_%s%s;" % (funcion, nombre_vista, valores)
+    db.engine.execute(text(procedimiento).execution_options(autocommit=True))
+    return
+
+
 #def editar_vista(nombre_vista, values):

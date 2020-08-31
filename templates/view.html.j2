@@ -40,12 +40,93 @@
                     Eliminar
                   </button>
 
+                  {# confirm_eliminar{{persona.id}} #}
+
+                  <div class="modal fade" id="confirm_eliminar{{row.0}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="">Confirmar Eliminación</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          Esta seguro que desea eliminar?
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancelar</button>
+                          {# /delete/{{persona.id}} #}
+                          <a href="/delete/personal/{{nombre_tabla}}/{{row.0}}/{{nombres.0}}" class="btn btn-danger btn-xs">Confirmar</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                 </td>
               </tr>
+
+              <div id="modaledit{{row.0}}" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title">Actualizar Información</h4>
+                    </div>
+                    <div class="modal-body">
+                      {# {{url_for('update')}} #}
+                      <form action="{{url_for('function_vista' ,nombre_vista = nombre_tabla, funcion='actualiza')}}" method="POST">
+                        <input type="hidden" name="{{nombres.0}}" value="{{row.0}}">
+                        {% for col in nombres[1:nombres|length] %}
+                        <div class="form-group">
+                          <label>{{col}}</label>
+                          <input type="text" class="form-control" name="{{col}}" value="{{row[loop.index]}}" required="1">
+                        </div>
+                        {% endfor %}
+                        <div class="form-group">
+                          <button class="btn btn-primary" type="submit">Actualizar</button>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               {% endfor %}
             </tbody>
           </table>
+        </div>
+
+        <div id="mymodal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">Agregar {{nombre_tabla}}</h4>
+              </div>
+              <div class="modal-body">
+                {#  {{url_for('insert')}}  #}
+                <form action="{{url_for('function_vista', nombre_vista=nombre_tabla, funcion='inserta')}}" method="POST">
+
+                  {% for col in nombres[1:] %}
+                  <div class="form-group">
+                    <label>{{col}}</label>
+                    <input type="text" class="form-control" name="{{col}}" required="1">
+                  </div>
+                  {% endfor %}
+
+                  <div class="form-group">
+                    <button class="btn btn-primary" type="submit">Agregar</button>
+                  </div>
+
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+              </div>
+            </div>
+          </div>
         </div>
 
       </div>

@@ -46,11 +46,6 @@ def tabla(nombre_tabla):
     data , nombres =consultar(nombre_tabla)
     return render_template('crud.html.j2' , data=data, nombres=nombres, nombre_tabla=nombre_tabla)
 
-@app.route('/personal/<nombre_vista>')
-def vista(nombre_vista):
-    data , nombres =consultar('personal_'+nombre_vista)
-    return render_template('view.html.j2' , data=data, nombres=nombres, nombre_tabla=nombre_vista)
-
 @app.route('/insert/<nombre_tabla>' , methods=['POST'])
 def insert(nombre_tabla):
     if request.method == 'POST':
@@ -68,10 +63,25 @@ def update(nombre_tabla):
     if request.method == 'POST':
         columnas, values = form2data(request.form)
         editar(nombre_tabla,columnas,values)
-
     return redirect(url_for('tabla' , nombre_tabla = nombre_tabla))
 
+# Vistas:
+@app.route('/personal/<nombre_vista>')
+def vista(nombre_vista):
+    data , nombres =consultar('personal_'+nombre_vista)
+    return render_template('view.html.j2' , data=data, nombres=nombres, nombre_tabla=nombre_vista)
 
+@app.route('/<funcion>/<nombre_vista>', methods=['POST'])
+def function_vista(nombre_vista, funcion):
+    if request.method == 'POST':
+        columnas, values = form2data(request.form)
+        proced_vista(nombre_vista,values,funcion)
+    return redirect(url_for('vista' , nombre_vista = nombre_vista))
+
+@app.route('/delete/personal/<nombre_tabla>/<id>/<name_id>' , methods=['GET','POST'])
+def delete_vista(nombre_tabla, id,name_id):
+    eliminar(nombre_tabla,id,name_id)
+    return redirect(url_for('vista' , nombre_vista = nombre_tabla))
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
