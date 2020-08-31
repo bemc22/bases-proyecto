@@ -35,3 +35,6 @@ def editar(nombre_tabla,columnas,values):
     edicion = "UPDATE  %s %s WHERE %s = %s" % (nombre_tabla,updates,columnas[0],values[0])
     db.engine.execute(edicion)
     return
+
+# Para vistas:
+#def editar_vista(nombre_vista, values):

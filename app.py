@@ -41,13 +41,15 @@ def logout():
         session.clear()
     return redirect(url_for('inicio'))
 
-
-
 @app.route('/<nombre_tabla>')
 def tabla(nombre_tabla):
     data , nombres =consultar(nombre_tabla)
     return render_template('crud.html.j2' , data=data, nombres=nombres, nombre_tabla=nombre_tabla)
 
+@app.route('/personal/<nombre_vista>')
+def vista(nombre_vista):
+    data , nombres =consultar('personal_'+nombre_vista)
+    return render_template('view.html.j2' , data=data, nombres=nombres, nombre_tabla=nombre_vista)
 
 @app.route('/insert/<nombre_tabla>' , methods=['POST'])
 def insert(nombre_tabla):
