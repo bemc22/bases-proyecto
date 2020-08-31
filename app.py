@@ -20,7 +20,6 @@ def inicio():
     else:
         return render_template('login.html.j2')
 
-
 @app.route('/login', methods=['POST'])
 def login():
     datos = input2data(["usuario", "clave", "rol"])
@@ -33,7 +32,6 @@ def login():
     else:
         flash("El usuario y la contraseña no coinciden")
     return redirect(url_for('inicio'))
-
 
 @app.route('/logout', methods=['POST'])
 def logout():
