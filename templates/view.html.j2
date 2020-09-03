@@ -1,6 +1,6 @@
 {%extends 'header.html.j2' %}
 
-{% block title %} CRUD - {{nombre_tabla|capitalize}} {% endblock %}
+{% block title %} Personal: {{nombre_tabla|capitalize}} {% endblock %}
 
 {% block contenido %}
 
@@ -9,14 +9,32 @@
     <div class="row">
       <div class="col lg-12">
         <div class="jumbotron p-3">
-          <h2>CRUD Vista <b>{{nombre_tabla|capitalize}} </b>
-            <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#mymodal">Agregar</button></h2>
-          <br>
-          <table class="table table-hover table-ligth">
+          <h2>REGISTROS: <b>{{nombre_tabla|capitalize}} </b></h2>
+          <div class="d-flex p-2 mt-4 mb-3 justify-content-between bg-light">
+            <div class="input-group w-75">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-search"></i></span>
+              </div>
+              <input type="text" aria-label="Buscar..." class="form-control">
+              <select class="custom-select">
+                <option selected>Filtrar por...</option>
+                {% for columna in nombres %}
+                <option value = "{{columna}}">{{columna|capitalize | replace('_', ' ')}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#mymodal">
+              <i class="fas fa-plus-square mr-2"></i>
+              Agregar
+            </button>
+          </div>
+
+          <div class="d-flex bg-light">
+            <table class="table table-striped table-hover table-ligth">
             <thead class="thead-dark">
               <tr>
                 {% for columna in nombres %}
-                <th>{{columna|capitalize}}</th>
+                <th>{{columna|capitalize | replace('_', ' ')}}</th>
                 {% endfor %}
 
                 <th style="text-align: center">Actions</th>
@@ -33,10 +51,12 @@
 
                 <td style="text-align: center">
 
-                  <a href="" class="btn btn-outline-primary btn-xs" data-toggle="modal" data-target="#modaledit{{row.0}}">Editar</a>
+                  <a class="btn btn-outline-primary btn-xs m-1" data-toggle="modal" data-target="#modaledit{{row.0}}">
+                    <i class="fas fa-edit"></i>
+                  </a>
 
                   <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#confirm_eliminar{{row.0}}">
-                    Eliminar
+                    <i class="fas fa-trash-alt"></i>
                   </button>
 
                   {# confirm_eliminar{{persona.id}} #}
@@ -96,6 +116,7 @@
               {% endfor %}
             </tbody>
           </table>
+          </div>
         </div>
 
         <div id="mymodal" class="modal fade" role="dialog">
