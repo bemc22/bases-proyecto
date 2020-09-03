@@ -29,8 +29,9 @@ def login():
     print(data)
     if data:
         session["rol"] = datos["rol"]
+        flash("Ha ingresado correctamente al sistema.", 'success')
     else:
-        flash("El usuario y la contraseña no coinciden")
+        flash("El usuario y la contraseña no coinciden", 'error')
     return redirect(url_for('inicio'))
 
 @app.route('/logout', methods=['POST'])

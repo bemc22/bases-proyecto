@@ -4,7 +4,7 @@
 
 {% block body %}
 
-<div class="d-flex vh-100 justify-content-center align-items-center">
+<div class="d-flex vh-100 justify-content-center align-items-center fondo">
 
   <div class="d-flex justify-content-center h-100 mw-332">
     <div class="card my-auto shadow-lg bg-secundary">
@@ -86,16 +86,4 @@
   </div>
 </div>
 
-{% endblock %}
-
-{% block action %}
-  {% with mensajes = get_flashed_messages() %}
-    {% if mensajes %}
-      {% for msg in mensajes %}
-        <script type="text/javascript">
-          notifica_error("{{msg}}");
-        </script>
-      {% endfor %}
-    {% endif %}
-  {% endwith %}
 {% endblock %}

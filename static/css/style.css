@@ -30,6 +30,12 @@ body::-webkit-scrollbar-track:active {
   background: #d4d4d4;
 }
 
+.fondo{
+  background-image: url(../img/fondo.jpg);
+  background-position: center;
+}
+
+
 /*
     DEMO STYLE
 */

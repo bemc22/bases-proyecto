@@ -32,11 +32,18 @@ $(document).ready(function () {
 });
 
 // Configurando alertas:
-function notifica_error(msg){
+function notificacion(type, msg){
   Swal.fire({
-    icon: 'error',
-    title: 'Oops...',
-    text: msg,
-    footer: 'Si no recuerda su contraseña, por favor consulte al admin encargado'
+    icon: type,
+    title: msg,
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    onOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
   })
 }
