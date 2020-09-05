@@ -79,21 +79,32 @@ def curso(nombre_tabla):
     if session['rol'] == "profesor":
         materias , x = consultar('materia')
         mis_materias , x = consultar('curso_'+'materia' , session['rol'] + '_id' , session['id'])
-        mis_materias = [i[0] for i in mis_materias]
+        dict_materias =dict()
+
+        for materia in mis_materias:
+            dict_materias[materia[0]] = materia[2]
 
         data , nombres =consultar('curso_'+nombre_tabla , session['rol'] + '_id' , session['id'])
-        return render_template('profesor.html.j2' , data=[reg[:-1] for reg in data], nombres=nombres[:-1], nombre_tabla=nombre_tabla , mis_materias=mis_materias, materias=materias)
+
+        return render_template('profesor.html.j2' , data=data, nombres=nombres[:-2], nombre_tabla=nombre_tabla , mis_materias=dict_materias, materias=materias )
 
 @app.route('/curso/insert/<nombre_tabla>', methods=['POST'])
 def function_curso(nombre_tabla):
         if request.method == 'POST':
+            print(request.form)
             columnas , values = form2data(request.form)
             values = [str(session['id'])] + values
             proced_vista('curso_' + nombre_tabla, values , 'inserta')
             return redirect(url_for('curso' , nombre_tabla = nombre_tabla))
 
+@app.route('/curso/delete/<nombre_tabla>/<id>', methods=['GET','POST'])
+def curso_delete(nombre_tabla,id):
+    if nombre_tabla == 'materia':
+        eliminar('materia_profesor', id, 'mp_id' )
+    elif nombre_tabla == 'grupo':
+        eliminar('grupo' , id , 'grupo_id')
 
-
+    return redirect(url_for('curso' , nombre_tabla = nombre_tabla))
 
 @app.route('/sesiones')
 def sesiones():

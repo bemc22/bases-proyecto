@@ -46,19 +46,18 @@
                 {% for row in data %}
                 <tr>
 
-                  {% for item in row %}
+                  {% for item in row[:-2] %}
                   <td>{{item}}</td>
                   {% endfor %}
 
                   <td style="text-align: center">
-
-                    <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#confirm_eliminar{{row.0}}">
+                    <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#confirm_eliminar{{loop.index}}">
                       <i class="fas fa-trash-alt"></i>
                     </button>
 
                     {# confirm_eliminar{{persona.id}} #}
 
-                    <div class="modal fade" id="confirm_eliminar{{row.0}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal fade" id="confirm_eliminar{{loop.index}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                       <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
@@ -73,7 +72,10 @@
                           <div class="modal-footer">
                             <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancelar</button>
                             {# /delete/{{persona.id}} #}
-                            <a href="" class="btn btn-danger btn-xs">Confirmar</a>
+
+
+
+                            <a href="/curso/delete/{{nombre_tabla}}/{{row[-1]}}" class="btn btn-danger btn-xs">Confirmar</a>
                           </div>
                         </div>
                       </div>
@@ -103,9 +105,11 @@
                   <div class="form-group">
                     <label>{{col}}</label>
 
-                    {% if col == 'materia' %}
 
+
+                    {% if col == 'materia' %}
                       {% if nombre_tabla == 'materia' %}
+
                       <select class="form-control"  name="{{col}}">
                         {% for materia in materias %}
                           {% if materia.1 not in mis_materias %}
@@ -116,10 +120,10 @@
 
                       {% else %}
 
-                      <select class="form-control"  name="{{col}}">
+                      <select class="form-control"  name="mp_id">
                         {% for materia in materias %}
                           {% if materia.1  in mis_materias %}
-                          <option value="{{materia.0}}">{{materia.1}}</option>
+                          <option value="{{mis_materias[materia.1]}}">{{materia.1}}</option>
                           {% endif %}
                         {% endfor %}
                       </select>
