@@ -4,8 +4,11 @@ from app import db
 
 # Comentario , Comentario editado
 
-def consultar(nombre_tabla):
-    consulta = text("SELECT * FROM " + nombre_tabla)
+def consultar(nombre_tabla, clave=None, valor=None):
+    if clave and valor:
+        consulta = text(f"SELECT * FROM {nombre_tabla} WHERE {clave} = {valor}")
+    else:
+        consulta = text("SELECT * FROM " + nombre_tabla)
     data = db.engine.execute(consulta)
     data = data.fetchall()
     consulta = text("SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = " +"'" + nombre_tabla + "'")
@@ -36,12 +39,23 @@ def editar(nombre_tabla,columnas,values):
     db.engine.execute(edicion)
     return
 
+def foreign(nombre_tabla, clave=None, valor=None, campos=None):
+    if not campos:
+        campos = [f"{nombre_tabla}_id", "nombre"]
+    campos = ', '.join(campos)
+    if clave and valor:
+        if type(valor) is list:
+            valor = ', '.join([str(v) for v in valor])
+        consulta = text(f"SELECT {campos} FROM {nombre_tabla} WHERE {clave} in ({valor})")
+    else:
+        consulta = text(f"SELECT {campos} FROM {nombre_tabla}")
+    data = db.engine.execute(consulta)
+    data = data.fetchall()
+    return data
+
 # Para vistas:
 def proced_vista(nombre_vista, values, funcion):
     valores =  "(" + ", ".join([ "'" + str(i) + "'" for i in values]) + ")"
     procedimiento = "CALL %s_%s%s;" % (funcion, nombre_vista, valores)
     db.engine.execute(text(procedimiento).execution_options(autocommit=True))
     return
-
-
-#def editar_vista(nombre_vista, values):

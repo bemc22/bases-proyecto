@@ -14,7 +14,6 @@ db = SQLAlchemy(app)
 
 @app.route('/')
 def inicio():
-
     if "rol" in session:
         return render_template('menu.html.j2')
     else:
@@ -74,12 +73,23 @@ def vista(nombre_vista):
     data , nombres =consultar('personal_'+nombre_vista)
     return render_template('view.html.j2' , data=data, nombres=nombres, nombre_tabla=nombre_vista)
 
+@app.route('/sesiones')
+def sesiones():
+    data , nombres =consultar('sesiones_'+session['rol'], session['rol']+'_id', session['id'])
+    if session['rol'] == "profesor":
+        ludicas = foreign('ludica')
+        mp = foreign('materia_profesor', 'profesor_id', session['id'], ['*'])
+        grupos = foreign('grupo', 'mp_id', [m[0] for m in mp])
+        return render_template('sesion.html.j2' , data=[reg[:-1] for reg in data], nombres=nombres[:-1], ludicas=ludicas, grupos=grupos)
+    else:
+        return render_template('sesion.html.j2' , data=[reg[:-1] for reg in data], nombres=nombres[:-1])
+
 @app.route('/<funcion>/<nombre_vista>', methods=['POST'])
 def function_vista(nombre_vista, funcion):
     if request.method == 'POST':
         columnas, values = form2data(request.form)
         proced_vista(nombre_vista,values,funcion)
-    return redirect(url_for('vista' , nombre_vista = nombre_vista))
+    return redirect(url_for('sesiones')) if nombre_vista=='sesion' else  redirect(url_for('vista' , nombre_vista = nombre_vista))
 
 @app.route('/delete/personal/<nombre_tabla>/<id>/<name_id>' , methods=['GET','POST'])
 def delete_vista(nombre_tabla, id,name_id):
