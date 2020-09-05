@@ -1,0 +1,154 @@
+{%extends 'header.html.j2' %}
+
+{% block title %} Profesor: {{nombre_tabla|capitalize}} {% endblock %}
+
+{% block contenido %}
+
+<div class="">
+  <div class="container p-2">
+    <div class="row">
+      <div class="col lg-12">
+        <div class="jumbotron p-3">
+          <h2><b>{{nombre_tabla|capitalize}}s </b></h2>
+
+          <div class="d-flex p-2 mt-4 mb-3 justify-content-between bg-light">
+            <div class="input-group w-75">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-search"></i></span>
+              </div>
+              <input type="text" aria-label="Buscar..." class="form-control" id="filter-input">
+              <select class="custom-select" id="filter-select">
+                <option selected>Filtrar por...</option>
+                {% for columna in nombres %}
+                <option value="{{loop.index0}}">{{columna|capitalize | replace('_', ' ')}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#mymodal">
+              <i class="fas fa-plus-square mr-2"></i>
+              Agregar
+            </button>
+          </div>
+
+          <div class="d-flex bg-light">
+            <table class="table table-hover table-ligth">
+              <thead class="thead-dark">
+                <tr>
+                  {% for columna in nombres %}
+                  <th>{{columna|capitalize | replace('_', ' ')}}</th>
+                  {% endfor %}
+
+                  <th style="text-align: center">Actions</th>
+                </tr>
+
+              </thead>
+              <tbody>
+                {% for row in data %}
+                <tr>
+
+                  {% for item in row %}
+                  <td>{{item}}</td>
+                  {% endfor %}
+
+                  <td style="text-align: center">
+
+                    <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#confirm_eliminar{{row.0}}">
+                      <i class="fas fa-trash-alt"></i>
+                    </button>
+
+                    {# confirm_eliminar{{persona.id}} #}
+
+                    <div class="modal fade" id="confirm_eliminar{{row.0}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="">Confirmar Eliminación</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            Esta seguro que desea eliminar?
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancelar</button>
+                            {# /delete/{{persona.id}} #}
+                            <a href="" class="btn btn-danger btn-xs">Confirmar</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </td>
+                </tr>
+
+
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="mymodal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">Agregar {{nombre_tabla}}</h4>
+              </div>
+              <div class="modal-body">
+                {#  {<!-- {{url_for('function_vista', nombre_vista=nombre_tabla, funcion='inserta')} -->  #}
+
+                <form action="{{url_for('function_curso' , nombre_tabla=nombre_tabla)}}" method="POST">
+                  {% for col in nombres %}
+                  <div class="form-group">
+                    <label>{{col}}</label>
+
+                    {% if col == 'materia' %}
+
+                      {% if nombre_tabla == 'materia' %}
+                      <select class="form-control"  name="{{col}}">
+                        {% for materia in materias %}
+                          {% if materia.1 not in mis_materias %}
+                          <option value="{{materia.0}}">{{materia.1}}</option>
+                          {% endif %}
+                        {% endfor %}
+                      </select>
+
+                      {% else %}
+
+                      <select class="form-control"  name="{{col}}">
+                        {% for materia in materias %}
+                          {% if materia.1  in mis_materias %}
+                          <option value="{{materia.0}}">{{materia.1}}</option>
+                          {% endif %}
+                        {% endfor %}
+                      </select>
+
+                      {% endif %}
+
+
+                    {% else %}
+                    <input type="text" class="form-control" name="{{col}}" required="1">
+                    {% endif %}
+
+                  </div>
+                  {% endfor %}
+
+                  <div class="form-group">
+                    <button class="btn btn-primary" type="submit">Agregar</button>
+                  </div>
+
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  {% endblock %}

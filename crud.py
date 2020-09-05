@@ -59,3 +59,13 @@ def proced_vista(nombre_vista, values, funcion):
     procedimiento = "CALL %s_%s%s;" % (funcion, nombre_vista, valores)
     db.engine.execute(text(procedimiento).execution_options(autocommit=True))
     return
+
+
+# Para Profesor curso (materias, grupos):
+
+def proced_curso(values, nombre_tabla):
+    valores = "(" + ", ".join([ "'" + str(i) + "'" for i in values]) + ")"
+    procedimiento ="CALL curso"
+    print(valores)
+
+    return

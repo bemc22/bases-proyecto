@@ -98,15 +98,15 @@
 
     {% if session['rol'] == 'profesor' %}
       <li>
-        <a href="{{url_for('tabla', nombre_tabla='materia')}}">
+        <a href="{{url_for('curso', nombre_tabla='materia')}}">
           <i class="fas fa-paperclip"></i>
           <span> Mis materias </span>
         </a>
       </li>
       <li>
-        <a href="{{url_for('tabla', nombre_tabla='grupo')}}">
+        <a href="{{url_for('curso', nombre_tabla='grupo')}}">
           <i class="fas fa-list-alt"></i>
-          <span> Mis cursos </span>
+          <span> Mis Grupos </span>
         </a>
       </li>
       <li>
