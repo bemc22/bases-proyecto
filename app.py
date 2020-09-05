@@ -67,12 +67,8 @@ def update(nombre_tabla):
         editar(nombre_tabla,columnas,values)
     return redirect(url_for('tabla' , nombre_tabla = nombre_tabla))
 
-# Vistas:
-@app.route('/personal/<nombre_vista>')
-def vista(nombre_vista):
-    data , nombres =consultar('personal_'+nombre_vista)
-    return render_template('view.html.j2' , data=data, nombres=nombres, nombre_tabla=nombre_vista)
 
+# Rol: Profesor Cursos
 
 @app.route('/curso/<nombre_tabla>')
 def curso(nombre_tabla):
@@ -105,6 +101,18 @@ def curso_delete(nombre_tabla,id):
         eliminar('grupo' , id , 'grupo_id')
 
     return redirect(url_for('curso' , nombre_tabla = nombre_tabla))
+
+
+
+
+# Vistas:
+@app.route('/personal/<nombre_vista>')
+def vista(nombre_vista):
+    col_select = {'sexo' , 'dependencia' , 'jefe'}
+
+    data , nombres =consultar('personal_'+nombre_vista)
+    return render_template('view.html.j2' , data=data, nombres=nombres, nombre_tabla=nombre_vista)
+
 
 @app.route('/sesiones')
 def sesiones():
