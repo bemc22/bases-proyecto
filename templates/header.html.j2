@@ -6,7 +6,15 @@
   <nav id="sidebar" class="active">
 
     <div class="sidebar-header" id="sidebarCollapse">
-      <h3>Bienvenido {{session['rol']}} </h3>
+      <h3>Bienvenido {{session['rol']}}
+        {% session['rol'] == 'profesor' %}
+          {{session['id']}}
+        {% endif %}
+        {% session['rol'] == 'auxiliar' %}
+          {{session['id']}}
+          {{session['jefe']}}
+        {% endif %}
+      </h3>
       <strong><i class="fas fa-align-justify"></i></strong>
     </div>
 

@@ -26,9 +26,13 @@ def login():
     consulta = text("SELECT * FROM usuario_"+datos["rol"]+" WHERE nombre = '"+datos["usuario"]+"' AND clave = '"+datos["clave"]+"'")
     data = db.engine.execute(consulta)
     data = data.fetchone()
-    print(data)
     if data:
         session["rol"] = datos["rol"]
+        if datos["rol"] == 'profesor':
+            session["id"] = data[2]
+        elif datos["rol"] == 'auxiliar':
+            session["id"] = data[2]
+            session["jefe"] = data[3]
         flash("Ha ingresado correctamente al sistema.", 'success')
     else:
         flash("El usuario y la contraseña no coinciden", 'error')
