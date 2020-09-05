@@ -7,10 +7,10 @@
 
     <div class="sidebar-header" id="sidebarCollapse">
       <h3>Bienvenido {{session['rol']}}
-        {% session['rol'] == 'profesor' %}
+        {% if session['rol'] == 'profesor' %}
           {{session['id']}}
         {% endif %}
-        {% session['rol'] == 'auxiliar' %}
+        {% if session['rol'] == 'auxiliar' %}
           {{session['id']}}
           {{session['jefe']}}
         {% endif %}
