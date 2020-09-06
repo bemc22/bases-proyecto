@@ -119,6 +119,7 @@ def vista(nombre_vista):
 def sesiones():
     if session['rol'] == 'admin':
         data , nombres =consultar('sesiones_'+session['rol'])
+        auxiliares = consultar('ver_auxiliar')
     else:
         data , nombres =consultar('sesiones_'+session['rol'], session['rol']+'_id', session['id'])
     if session['rol'] == "profesor":
@@ -129,7 +130,18 @@ def sesiones():
     elif session['rol'] == "auxiliar":
         return render_template('sesion.html.j2' , data=[reg[:-1] for reg in data], nombres=nombres[:-1])
     else:
-        return render_template('sesion.html.j2' , data=data, nombres=nombres)
+
+        return render_template('sesion.html.j2' , data=data, nombres=nombres , auxiliares=auxiliares)
+
+@app.route('/sesiones/asignar' , methods=['POST'])
+def asignar():
+    if request.method == 'POST':
+        columnas, values = form2data(request.form)
+        print(columnas)
+        print(values)
+        insertar('auxiliar_sesion',columnas,values)
+    return redirect(url_for('sesiones'))
+
 
 @app.route('/<funcion>/<nombre_vista>', methods=['POST'])
 def function_vista(nombre_vista, funcion):

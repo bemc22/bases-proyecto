@@ -11,7 +11,6 @@
 
           {% if data|length == 0 %}
             <div class="p-4 m-5 justify-content-between bg-light">
-              {% if session['rol'] == "profesor" %}
               <h2> Aun no tiene sesiones programadas... </h2>
               <h3> Programa tu primera sesion ahora </h3>
               <br>
@@ -23,15 +22,6 @@
                   </button>
                 </div>
               </div>
-              {% else %}
-                {% if session['rol'] == "auxiliar" %}
-                <h2> Aun no ha sido asignado a ninguna sesión... </h2>
-                <h3> Dentro de poco el admin le asignará a alguna, por favor este pendiente. </h3>
-                {% else %}
-                <h2> Aun no tiene sesiones programadas... </h2>
-                <h3> Aun no existen registros de que algún profesor haya solicitado una sesión. </h3>
-                {% endif %}
-              {% endif %}
             </div>
           {% else %}
             <div class="d-flex p-2 mt-4 mb-3 justify-content-between bg-light">
@@ -47,21 +37,28 @@
                   {% endfor %}
                 </select>
               </div>
-              {% if session['rol'] == 'profesor' %}
               <button type="button" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#mymodal">
                 <i class="fas fa-calendar-plus mr-2"></i>
                 Agendar
               </button>
-              {% endif %}
             </div>
 
             <div class="d-flex bg-light">
               <table class="table table-hover table-ligth">
                 <thead class="thead-dark">
                   <tr>
+
+                    {% if session['id'] == admin %}
+                    {% for columna in nombres[:-1] %}
+                    <th>{{columna|capitalize | replace('_', ' ')}}</th>
+                    {% endfor %}
+
+                    {% else %}
+
                     {% for columna in nombres %}
                     <th>{{columna|capitalize | replace('_', ' ')}}</th>
                     {% endfor %}
+                    {% endif %}
 
                     <th style="text-align: center">Actions</th>
                   </tr>
@@ -70,10 +67,15 @@
                 <tbody>
                   {% for row in data %}
                   <tr>
-
+                    {% if session['id'] == admin %}
+                      {% for item in row[:-1] %}
+                      <td>{{item}}</td>
+                      {% endfor %}
+                    {% else %}
                     {% for item in row %}
                     <td>{{item}}</td>
                     {% endfor %}
+                    {% endif %}
 
                     <td style="text-align: center">
 
@@ -81,14 +83,47 @@
                         <i class="fas fa-address-book"></i>
                       </button>
 
-                      {% if session['rol'] == 'admin' %}
-                      <button type="button" class="btn btn-success btn-xs">
-                        <i class="fas fa-user-plus"></i>
-                      </button>
+                      {% if session['id'] == admin %}
+                          <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#asignar_{{loop.index}}">
+                            <i class="fas fa-user-plus"></i>
+                          </button>
                       {% endif %}
-
                     </td>
                   </tr>
+
+                  {% if session['id'] == admin %}
+                  <div id="asignar_{{loop.index}}" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h4 class="modal-title">Asignar auxiliar</h4>
+                        </div>
+                        <div class="modal-body">
+                          {#  {{url_for('insert')}}  #}
+
+                          <form action="{{url_for('asignar')}}" method="POST">
+                            <input type="hidden" name="{{nombres[-1]}}" value="{{row[-1]}}">
+
+                            <label for="">Auxiliar</label>
+
+                            <select class="form-control" name="{{auxiliares[1][0]}}">
+                              {% for auxiliar in auxiliares[0] %}
+                                <option value="{{auxiliar.0}}">{{auxiliar.1}}</option>
+                              {% endfor %}
+                            </select>
+                            <br>
+                            <div class="form-group">
+                              <button class="btn btn-primary" type="submit">Asignar</button>
+                            </div>
+                          </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {% endif %}
 
                   {% endfor %}
                 </tbody>
@@ -98,7 +133,6 @@
 
         </div>
 
-        {% if session['rol'] == 'profesor' %}
         <div id="mymodal" class="modal fade" role="dialog">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -152,7 +186,6 @@
             </div>
           </div>
         </div>
-        {% endif %}
 
       </div>
     </div>

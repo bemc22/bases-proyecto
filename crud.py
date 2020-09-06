@@ -66,5 +66,4 @@ def proced_vista(nombre_vista, values, funcion):
 def proced_curso(values, nombre_tabla):
     valores = "(" + ", ".join([ "'" + str(i) + "'" for i in values]) + ")"
     procedimiento ="CALL curso"
-    print(valores)
     return
