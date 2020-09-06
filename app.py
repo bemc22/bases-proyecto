@@ -19,7 +19,9 @@ def inicio():
     if "rol" in session:
         return render_template('menu.html.j2')
     else:
-        return render_template('login.html.j2')
+        carreras = consultar('carrera')
+        print(carreras[0])
+        return render_template('login.html.j2', carreras= carreras[0])
 
 # Login
 
@@ -139,7 +141,7 @@ def vista(nombre_vista):
     'cargo': [('true','Jefe') , ('false','Auxiliar')]
 
     }
-    
+
     carreras = consultar('carrera')
     col_select['carrera'] = carreras[0]
 

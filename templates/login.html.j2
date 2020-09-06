@@ -130,7 +130,13 @@
                 </div>
                 <div class="form-group">
                   <label>Carrera:</label>
-                  <input type="text" class="form-control" name="carrera" required>
+
+                  <select class="form-control" name="carrera" required>
+                    {% for item in carreras %}
+                      <option value="{{item.0}}">{{item.1 |title}}</option>
+                    {% endfor %}
+                  </select>
+
                 </div>
                 <div class="form-group">
                   <label>Semestre:</label>
