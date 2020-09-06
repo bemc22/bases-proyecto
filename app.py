@@ -136,8 +136,13 @@ def vista(nombre_vista):
     col_select = {
     'sexo':[('M','Masculino'),('F','Femenino')] ,
     'dependencia': [('C','Catedra'),('P','Planta')],
-    'jefe': [('true','Si') , ('false','No')]
+    'cargo': [('true','Jefe') , ('false','Auxiliar')]
+
     }
+    
+    carreras = consultar('carrera')
+    col_select['carrera'] = carreras[0]
+
 
     data , nombres =consultar('personal_'+nombre_vista)
     return render_template('view.html.j2' , data=data, nombres=nombres, nombre_tabla=nombre_vista, especial_case=col_select)
