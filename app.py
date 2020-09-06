@@ -110,9 +110,15 @@ def curso_delete(nombre_tabla,id):
 # Vistas:
 @app.route('/personal/<nombre_vista>')
 def vista(nombre_vista):
-    col_select = {'sexo' , 'dependencia' , 'jefe'}
+
+    col_select = {
+    'sexo':[('M','Masculino'),('F','Femenino')] ,
+    'dependencia': [('C','Catedra'),('P','Planta')],
+    'jefe': [('true','Si') , ('false','No')]
+    }
+    
     data , nombres =consultar('personal_'+nombre_vista)
-    return render_template('view.html.j2' , data=data, nombres=nombres, nombre_tabla=nombre_vista)
+    return render_template('view.html.j2' , data=data, nombres=nombres, nombre_tabla=nombre_vista, especial_case=col_select)
 
 
 @app.route('/sesiones')
