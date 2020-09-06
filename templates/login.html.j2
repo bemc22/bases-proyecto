@@ -48,40 +48,169 @@
 
             <div class="row">
               <div class="col text-center">
-                <button type="submit" class="btn btn-info"><i class="fas fa-sign-in-alt mr-2"></i>Ingresar</button>
+                <button type="submit" class="btn btn-info">
+                  <i class="fas fa-sign-in-alt mr-2"></i>Ingresar
+                </button>
               </div>
             </div>
           </div>
         </div>
-
-        <div class="collapse" id="opcion-estudiante">
-          <div class="card-header">
-            <h4 class="m-0">¿¿Recientemente asististe a una lúdica de Galea??</h4>
-          </div>
-
-          <div class="card-body mx-auto justify-content-center align-items-center mw-50">
-            <p class="text-justify text-break">
-              Para registrar tu asistencia y que tu participación sea notificada al docente,
-              por favor ingresa en el siguiente enlace y sigue las intrucciones del auxiliar.
-            </p>
-            <div class="row">
-              <div class="col text-center">
-                <button type="button" class="btn btn-dark"><i class="fas fa-clipboard mr-2"></i> Registro </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
       </form>
+
+      <div class="collapse" id="opcion-estudiante">
+        <div class="card-header">
+          <h4 class="m-0">¿¿Recientemente asististe a una lúdica de Galea??</h4>
+        </div>
+
+        <div class="card-body mx-auto justify-content-center align-items-center mw-50">
+          <div class="row">
+            <div class="col text-center">
+              <button type="button" class="btn btn-outline-dark btn-lg" data-toggle="modal" data-target="#ModalRegistro">
+                <i class="fas fa-clipboard mr-2"></i> Primera vez
+              </button>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col text-center">
+              o
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col text-center">
+              <button type="button" class="btn btn-outline-dark btn-lg" data-toggle="modal" data-target="#ModalAsistencia">
+                <i class="fas fa-clipboard-list mr-2"></i> Asistencia
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div class="card-footer">
         <div class="d-flex justify-content-center links">
-        ¿Primera vez ingresando?
+          ¿Primera vez ingresando?
         </div>
         <div class="d-flex justify-content-center">
           <a href="#">Consulta que servicios ofrecemos!!</a>
         </div>
       </div>
+
+      <div id="ModalRegistro" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Registrarse Sistema Galea</h4>
+            </div>
+            <div class="modal-body">
+              {#  {{url_for('insert')}}  #}
+              <form action="{{url_for('registro')}}" method="POST">
+                <div class="form-group">
+                  <label>Código Estudiante:</label>
+                  <input type="text" class="form-control" name="codigo" required>
+                </div>
+                <div class="form-group">
+                  <label>Nombre:</label>
+                  <input type="text" class="form-control" name="nombre" required>
+                </div>
+                <div class="form-group">
+                  <label>Apellido:</label>
+                  <input type="text" class="form-control" name="apellido" required>
+                </div>
+                <div class="form-group">
+                  <label>Sexo:</label>
+                  <select class="custom-select" name="sexo">
+                    <option value="F"> Femenino </option>
+                    <option value="M"> Masculino </option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Fecha de nacimiento:</label>
+                  <input type="date" class="form-control" name="fecha_nacimiento" required>
+                </div>
+                <div class="form-group">
+                  <label>Carrera:</label>
+                  <input type="text" class="form-control" name="carrera" required>
+                </div>
+                <div class="form-group">
+                  <label>Semestre:</label>
+                  <input type="number" class="form-control" name="semestre" required>
+                </div>
+
+                <div class="form-group">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="tyc">
+                    <label class="custom-control-label" for="tyc">
+                      Acepta los <a href="#" id="link-tyc" class="badge-light">términos y condiciones</a>
+                    </label>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-outline-primary" id="register-button" disabled>
+                  <i class="fas fa-pencil-alt mr-2"></i> Registrarse
+                </button>
+
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="ModalAsistencia" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Registrar Asistencia a Lúdica</h4>
+            </div>
+            <div class="modal-body">
+              {#  {{url_for('insert')}}  #}
+              <form action="{{url_for('asist')}}" method="POST">
+                <div class="form-group">
+                  <label>Código Estudiante:</label>
+                  <input type="text" class="form-control" name="codigo">
+                </div>
+                <div class="form-group">
+                  <label>Código Sesión:</label>
+                  <input type="text" class="form-control" name="sesion">
+                </div>
+                <div class="form-group">
+                  <label for="cat1">Categoria 1</label>
+                  <input type="range" class="form-control-range" min="0" max="5" id="cat1" name="nota1">
+                </div>
+                <div class="form-group">
+                  <label for="cat2">Categoria 2</label>
+                  <input type="range" class="form-control-range" min="0" max="5" id="cat2" name="nota2">
+                </div>
+                <div class="form-group">
+                  <label for="cat3">Categoria 3</label>
+                  <input type="range" class="form-control-range" min="0" max="5" id="cat3" name="nota3">
+                </div>
+                <div class="form-group">
+                  <label for="cat4">Categoria 4</label>
+                  <input type="range" class="form-control-range" min="0" max="5" id="cat4" name="nota4">
+                </div>
+                <div class="form-group">
+                  <label for="cat5">Categoria 5</label>
+                  <input type="range" class="form-control-range" min="0" max="5" id="cat5" name="nota5">
+                </div>
+
+                <button type="submit" class="btn btn-outline-primary">
+                  <i class="fas fa-paper-plane mr-2"></i> Enviar
+                </button>
+
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
     </div>
   </div>
 </div>

@@ -47,6 +47,28 @@ def logout():
         session.clear()
     return redirect(url_for('inicio'))
 
+@app.route('/registro', methods=['POST'])
+def registro():
+    columnas, values = form2data(request.form)
+    consulta = text(f"SELECT 1 FROM estudiante WHERE codigo = '{values[0]}'")
+    verifica = db.engine.execute(consulta)
+    verifica = verifica.fetchone()
+    if verifica:
+        flash('El estudiante ya se encuentra registrado en el sistema.', 'error')
+    else:
+        proced_vista('estudiante',values,'inserta')
+        flash('El registro ha sido exitoso, ya puede confirmar su asistencia', 'success')
+    return redirect(url_for('inicio'))
+
+@app.route('/asist', methods=['post'])
+def asist():
+    columnas, values = form2data(request.form)
+    proced_vista('ludica',values[:2],'asistencia')
+    for i in range(1,6):
+        proced_vista('nota',[values[1], i, values[i+1] ],'inserta')
+    flash('Su asistencia ha sido guardada exitosamente', 'success')
+    return redirect(url_for('inicio'))
+
 # CRUD para cualquier tabla
 
 @app.route('/<nombre_tabla>')
@@ -116,7 +138,7 @@ def vista(nombre_vista):
     'dependencia': [('C','Catedra'),('P','Planta')],
     'jefe': [('true','Si') , ('false','No')]
     }
-    
+
     data , nombres =consultar('personal_'+nombre_vista)
     return render_template('view.html.j2' , data=data, nombres=nombres, nombre_tabla=nombre_vista, especial_case=col_select)
 
