@@ -117,14 +117,19 @@ def vista(nombre_vista):
 
 @app.route('/sesiones')
 def sesiones():
-    data , nombres =consultar('sesiones_'+session['rol'], session['rol']+'_id', session['id'])
+    if session['rol'] == 'admin':
+        data , nombres =consultar('sesiones_'+session['rol'])
+    else:
+        data , nombres =consultar('sesiones_'+session['rol'], session['rol']+'_id', session['id'])
     if session['rol'] == "profesor":
         ludicas = foreign('ludica')
         mp = foreign('materia_profesor', 'profesor_id', session['id'], ['*'])
         grupos = foreign('grupo', 'mp_id', [m[0] for m in mp])
         return render_template('sesion.html.j2' , data=[reg[:-1] for reg in data], nombres=nombres[:-1], ludicas=ludicas, grupos=grupos)
-    else:
+    elif session['rol'] == "auxiliar":
         return render_template('sesion.html.j2' , data=[reg[:-1] for reg in data], nombres=nombres[:-1])
+    else:
+        return render_template('sesion.html.j2' , data=data, nombres=nombres)
 
 @app.route('/<funcion>/<nombre_vista>', methods=['POST'])
 def function_vista(nombre_vista, funcion):
