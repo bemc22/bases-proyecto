@@ -12,12 +12,16 @@ app.config['SQLALCHEMY_DATABASE_URI'] = url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
+# Rutas
+
 @app.route('/')
 def inicio():
     if "rol" in session:
         return render_template('menu.html.j2')
     else:
         return render_template('login.html.j2')
+
+# Login
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -42,6 +46,8 @@ def logout():
     if 'rol' in session:
         session.clear()
     return redirect(url_for('inicio'))
+
+# CRUD para cualquier tabla
 
 @app.route('/<nombre_tabla>')
 def tabla(nombre_tabla):
@@ -76,12 +82,10 @@ def curso(nombre_tabla):
         materias , x = consultar('materia')
         mis_materias , x = consultar('curso_'+'materia' , session['rol'] + '_id' , session['id'])
         dict_materias =dict()
-
         for materia in mis_materias:
             dict_materias[materia[0]] = materia[2]
 
         data , nombres =consultar('curso_'+nombre_tabla , session['rol'] + '_id' , session['id'])
-
         return render_template('profesor.html.j2' , data=data, nombres=nombres[:-2], nombre_tabla=nombre_tabla , mis_materias=dict_materias, materias=materias )
 
 @app.route('/curso/insert/<nombre_tabla>', methods=['POST'])
@@ -103,13 +107,10 @@ def curso_delete(nombre_tabla,id):
     return redirect(url_for('curso' , nombre_tabla = nombre_tabla))
 
 
-
-
 # Vistas:
 @app.route('/personal/<nombre_vista>')
 def vista(nombre_vista):
     col_select = {'sexo' , 'dependencia' , 'jefe'}
-
     data , nombres =consultar('personal_'+nombre_vista)
     return render_template('view.html.j2' , data=data, nombres=nombres, nombre_tabla=nombre_vista)
 
