@@ -75,132 +75,166 @@ def asist():
 
 @app.route('/<nombre_tabla>')
 def tabla(nombre_tabla):
-    data , nombres =consultar(nombre_tabla)
-    return render_template('crud.html.j2' , data=data, nombres=nombres, nombre_tabla=nombre_tabla)
+    if 'rol' in session:
+        data , nombres =consultar(nombre_tabla)
+        return render_template('crud.html.j2' , data=data, nombres=nombres, nombre_tabla=nombre_tabla)
+    else:
+        return redirect(url_for('inicio'))
 
 @app.route('/insert/<nombre_tabla>' , methods=['POST'])
 def insert(nombre_tabla):
-    if request.method == 'POST':
-        columnas, values = form2data(request.form)
-        insertar(nombre_tabla,columnas,values)
-        flash('El registro ha sido guardado exitosamente.', 'info')
-    return redirect(url_for('tabla' , nombre_tabla = nombre_tabla))
+    if 'rol' in session:
+        if request.method == 'POST':
+            columnas, values = form2data(request.form)
+            insertar(nombre_tabla,columnas,values)
+            flash('El registro ha sido guardado exitosamente.', 'info')
+        return redirect(url_for('tabla' , nombre_tabla = nombre_tabla))
+    else:
+        return redirect(url_for('inicio'))
 
 @app.route('/delete/<nombre_tabla>/<id>/<name_id>' , methods=['GET','POST'])
 def delete(nombre_tabla, id,name_id):
-    eliminar(nombre_tabla,id,name_id)
-    flash('El registro ha sido eliminado exitosamente.', 'info')
-    return redirect(url_for('tabla' , nombre_tabla = nombre_tabla))
+    if 'rol' in session:
+        eliminar(nombre_tabla,id,name_id)
+        flash('El registro ha sido eliminado exitosamente.', 'info')
+        return redirect(url_for('tabla' , nombre_tabla = nombre_tabla))
+    else:
+        return redirect(url_for('inicio'))
 
 @app.route('/update/<nombre_tabla>' , methods=['GET','POST'])
 def update(nombre_tabla):
-    if request.method == 'POST':
-        columnas, values = form2data(request.form)
-        editar(nombre_tabla,columnas,values)
-        flash('El registro ha sido editado exitosamente.', 'info')
-    return redirect(url_for('tabla' , nombre_tabla = nombre_tabla))
-
+    if 'rol' in session:
+        if request.method == 'POST':
+            columnas, values = form2data(request.form)
+            editar(nombre_tabla,columnas,values)
+            flash('El registro ha sido editado exitosamente.', 'info')
+        return redirect(url_for('tabla' , nombre_tabla = nombre_tabla))
+    else:
+        return redirect(url_for('inicio'))
 
 # Rol: Profesor Cursos
 
 @app.route('/curso/<nombre_tabla>')
 def curso(nombre_tabla):
-    if session['rol'] == "profesor":
-        materias , x = consultar('materia')
-        mis_materias , x = consultar('curso_'+'materia' , session['rol'] + '_id' , session['id'])
-        dict_materias =dict()
-        for materia in mis_materias:
-            dict_materias[materia[0]] = materia[2]
+    if 'rol' in session:
+        if session['rol'] == "profesor":
+            materias , x = consultar('materia')
+            mis_materias , x = consultar('curso_'+'materia' , session['rol'] + '_id' , session['id'])
+            dict_materias =dict()
+            for materia in mis_materias:
+                dict_materias[materia[0]] = materia[2]
 
-        data , nombres =consultar('curso_'+nombre_tabla , session['rol'] + '_id' , session['id'])
-        return render_template('profesor.html.j2' , data=data, nombres=nombres[:-2], nombre_tabla=nombre_tabla , mis_materias=dict_materias, materias=materias )
+            data , nombres =consultar('curso_'+nombre_tabla , session['rol'] + '_id' , session['id'])
+            return render_template('profesor.html.j2' , data=data, nombres=nombres[:-2], nombre_tabla=nombre_tabla , mis_materias=dict_materias, materias=materias )
+    else:
+        return redirect(url_for('inicio'))
 
 @app.route('/curso/insert/<nombre_tabla>', methods=['POST'])
 def function_curso(nombre_tabla):
-    if request.method == 'POST':
-        print(request.form)
-        columnas , values = form2data(request.form)
-        values = [str(session['id'])] + values
-        proced_vista('curso_' + nombre_tabla, values , 'inserta')
-        flash('El curso ha sido insertado exitosamente.', 'info')
-        return redirect(url_for('curso' , nombre_tabla = nombre_tabla))
+    if 'rol' in session:
+        if request.method == 'POST':
+            print(request.form)
+            columnas , values = form2data(request.form)
+            values = [str(session['id'])] + values
+            proced_vista('curso_' + nombre_tabla, values , 'inserta')
+            flash('El curso ha sido insertado exitosamente.', 'info')
+            return redirect(url_for('curso' , nombre_tabla = nombre_tabla))
+    else:
+        return redirect(url_for('inicio'))
 
 @app.route('/curso/delete/<nombre_tabla>/<id>', methods=['GET','POST'])
 def curso_delete(nombre_tabla,id):
-    if nombre_tabla == 'materia':
-        eliminar('materia_profesor', id, 'mp_id' )
-    elif nombre_tabla == 'grupo':
-        eliminar('grupo' , id , 'grupo_id')
-    flash('El curso ha sido eliminado exitosamente.', 'info')
-    return redirect(url_for('curso' , nombre_tabla = nombre_tabla))
+    if 'rol' in session:
+        if nombre_tabla == 'materia':
+            eliminar('materia_profesor', id, 'mp_id' )
+        elif nombre_tabla == 'grupo':
+            eliminar('grupo' , id , 'grupo_id')
+        flash('El curso ha sido eliminado exitosamente.', 'info')
+        return redirect(url_for('curso' , nombre_tabla = nombre_tabla))
+    else:
+        return redirect(url_for('inicio'))
 
 # Capacitaciones:
 @app.route('/capacitaciones')
 def capacitaciones():
-    data , nombres =consultar('capacitaciones')
-    ludicas = foreign('ludica')
-    return render_template('capacitacion.html.j2', data=data, nombres=nombres, ludicas=ludicas)
+    if 'rol' in session:
+        data , nombres =consultar('capacitaciones')
+        ludicas = foreign('ludica')
+        return render_template('capacitacion.html.j2', data=data, nombres=nombres, ludicas=ludicas)
+    else:
+        return redirect(url_for('inicio'))
 
 
 # Vistas:
 @app.route('/personal/<nombre_vista>')
 def vista(nombre_vista):
+    if 'rol' in session:
+        col_select = {
+        'sexo':[('M','Masculino'),('F','Femenino')] ,
+        'dependencia': [('C','Catedra'),('P','Planta')],
+        'cargo': [('true','Jefe') , ('false','Auxiliar')]
+        }
 
-    col_select = {
-    'sexo':[('M','Masculino'),('F','Femenino')] ,
-    'dependencia': [('C','Catedra'),('P','Planta')],
-    'cargo': [('true','Jefe') , ('false','Auxiliar')]
+        carreras = consultar('carrera')
+        col_select['carrera'] = carreras[0]
 
-    }
-
-    carreras = consultar('carrera')
-    col_select['carrera'] = carreras[0]
-
-
-    data , nombres =consultar('personal_'+nombre_vista)
-    return render_template('view.html.j2' , data=data, nombres=nombres, nombre_tabla=nombre_vista, especial_case=col_select)
-
+        data , nombres =consultar('personal_'+nombre_vista)
+        return render_template('view.html.j2' , data=data, nombres=nombres, nombre_tabla=nombre_vista, especial_case=col_select)
+    else:
+        return redirect(url_for('inicio'))
 
 @app.route('/sesiones')
 def sesiones():
-    if session['rol'] == 'admin':
-        data , nombres =consultar('sesiones_'+session['rol'])
-        auxiliares = consultar('ver_auxiliar')
-    else:
-        data , nombres =consultar('sesiones_'+session['rol'], session['rol']+'_id', session['id'])
-    if session['rol'] == "profesor":
-        ludicas = foreign('ludica')
-        mp = foreign('materia_profesor', 'profesor_id', session['id'], ['*'])
-        grupos = foreign('grupo', 'mp_id', [m[0] for m in mp])
-        return render_template('sesion.html.j2' , data=[reg[:-1] for reg in data], nombres=nombres[:-1], ludicas=ludicas, grupos=grupos)
-    elif session['rol'] == "auxiliar":
-        return render_template('sesion.html.j2' , data=[reg[:-1] for reg in data], nombres=nombres[:-1])
-    else:
+    if 'rol' in session:
+        if session['rol'] == 'admin':
+            data , nombres =consultar('sesiones_'+session['rol'])
+            auxiliares = consultar('ver_auxiliar')
+        else:
+            data , nombres =consultar('sesiones_'+session['rol'], session['rol']+'_id', session['id'])
+        if session['rol'] == "profesor":
+            ludicas = foreign('ludica')
+            mp = foreign('materia_profesor', 'profesor_id', session['id'], ['*'])
+            grupos = foreign('grupo', 'mp_id', [m[0] for m in mp])
+            return render_template('sesion.html.j2' , data=[reg[:-1] for reg in data], nombres=nombres[:-1], ludicas=ludicas, grupos=grupos)
+        elif session['rol'] == "auxiliar":
+            return render_template('sesion.html.j2' , data=[reg[:-1] for reg in data], nombres=nombres[:-1])
+        else:
 
-        return render_template('sesion.html.j2' , data=data, nombres=nombres , auxiliares=auxiliares)
+            return render_template('sesion.html.j2' , data=data, nombres=nombres , auxiliares=auxiliares)
+    else:
+        return redirect(url_for('inicio'))
 
 @app.route('/sesiones/asignar' , methods=['POST'])
 def asignar():
-    if request.method == 'POST':
-        columnas, values = form2data(request.form)
-        insertar('auxiliar_sesion',columnas,values)
-        flash('El auxiliar ha sido guardado exitosamente.', 'info')
-    return redirect(url_for('sesiones'))
+    if 'rol' in session:
+        if request.method == 'POST':
+            columnas, values = form2data(request.form)
+            insertar('auxiliar_sesion',columnas,values)
+            flash('El auxiliar ha sido guardado exitosamente.', 'info')
+        return redirect(url_for('sesiones'))
+    else:
+        return redirect(url_for('inicio'))
 
 
 @app.route('/<funcion>/<nombre_vista>', methods=['POST'])
 def function_vista(nombre_vista, funcion):
-    if request.method == 'POST':
-        columnas, values = form2data(request.form)
-        proced_vista(nombre_vista,values,funcion)
-    flash(f'El registro ha sido {funcion}do exitosamente.', 'info')
-    return redirect(url_for(f'{nombre_vista}es')) if nombre_vista in ['sesion', 'capacitacion'] else  redirect(url_for('vista' , nombre_vista = nombre_vista))
+    if 'rol' in session:
+        if request.method == 'POST':
+            columnas, values = form2data(request.form)
+            proced_vista(nombre_vista,values,funcion)
+        flash(f'El registro ha sido {funcion}do exitosamente.', 'info')
+        return redirect(url_for(f'{nombre_vista}es')) if nombre_vista in ['sesion', 'capacitacion'] else  redirect(url_for('vista' , nombre_vista = nombre_vista))
+    else:
+        return redirect(url_for('inicio'))
 
 @app.route('/delete/personal/<nombre_tabla>/<id>/<name_id>' , methods=['GET','POST'])
 def delete_vista(nombre_tabla, id,name_id):
-    eliminar(nombre_tabla,id,name_id)
-    flash('El registro ha sido eliminado exitosamente.', 'info')
-    return redirect(url_for('vista' , nombre_vista = nombre_tabla))
+    if 'rol' in session:
+        eliminar(nombre_tabla,id,name_id)
+        flash('El registro ha sido eliminado exitosamente.', 'info')
+        return redirect(url_for('vista' , nombre_vista = nombre_tabla))
+    else:
+        return redirect(url_for('inicio'))
 
 
 if __name__ == '__main__':
