@@ -98,8 +98,31 @@
                           <input type="hidden" name="{{nombres.0}}" value="{{row.0}}">
                           {% for col in nombres[1:nombres|length] %}
                           <div class="form-group">
+                            {% if col in especial_case %}
+                              <label for="">{{col}}</label>
+                              <select class="form-control" name="{{col}}" required>
+                                {% for item in especial_case[col] %}
+                                  <option value="{{item.0}}">{{item.1}}</option>
+                                {% endfor %}
+                              </select>
+                            {% else %}
+
+                            {% if col  == 'fecha_nacimiento' %}
+                              <label>{{col}}</label>
+                              <input type="date" class="form-control" name="{{col}}" value="{{row[loop.index]}}" required="1">
+                            {% else %}
+
                             <label>{{col}}</label>
+
                             <input type="text" class="form-control" name="{{col}}" value="{{row[loop.index]}}" required="1">
+
+                            {% endif %}
+                            {% endif %}
+
+
+
+
+
                           </div>
                           {% endfor %}
                           <div class="form-group">
@@ -142,9 +165,13 @@
                         {% endfor %}
                       </select>
                     {% else %}
-
+                    {% if col  == 'fecha_nacimiento' %}
+                    <label>{{col}}</label>
+                    <input type="date" class="form-control" name="{{col}}" required="1">
+                    {% else %}
                     <label>{{col}}</label>
                     <input type="text" class="form-control" name="{{col}}" required="1">
+                    {% endif %}
                     {% endif %}
                   </div>
                   {% endfor %}
