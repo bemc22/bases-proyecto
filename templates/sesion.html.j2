@@ -12,6 +12,7 @@
           {% if data|length == 0 %}
             <div class="p-4 m-5 justify-content-between bg-light">
               <h2> Aun no tiene sesiones programadas... </h2>
+              {% if session['rol'] == profesor %}
               <h3> Programa tu primera sesion ahora </h3>
               <br>
               <div class="row">
@@ -22,6 +23,13 @@
                   </button>
                 </div>
               </div>
+              {% else %}
+                {% if session['rol'] == 'auxiliar' %}
+                <h3> Aún no ha sido asignado a ninguna sesión. Cuando sea asignado el sistema le informará. </h3>
+                {% else %}
+                <h3> Ningún profesor ha agendado sesiones este semestre. Cuando ya haya alguna programada el sistema le informará. </h3>
+                {% endif %}
+              {% endif %}
             </div>
           {% else %}
             <div class="d-flex p-2 mt-4 mb-3 justify-content-between bg-light">
@@ -37,10 +45,12 @@
                   {% endfor %}
                 </select>
               </div>
+              {% if session['rol'] == profesor %}
               <button type="button" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#mymodal">
                 <i class="fas fa-calendar-plus mr-2"></i>
                 Agendar
               </button>
+              {% endif %}
             </div>
 
             <div class="d-flex bg-light">
@@ -133,6 +143,7 @@
 
         </div>
 
+        {% if session['rol'] == "profesor" %}
         <div id="mymodal" class="modal fade" role="dialog">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -186,6 +197,7 @@
             </div>
           </div>
         </div>
+        {% endif %}
 
       </div>
     </div>
