@@ -17,7 +17,12 @@ db = SQLAlchemy(app)
 @app.route('/')
 def inicio():
     if "rol" in session:
-        return render_template('menu.html.j2')
+
+        dash = consultar('dash_admin')
+        dash = input2dash(dash)
+
+        print(dash)
+        return render_template('menu.html.j2' , dash= dash)
     else:
         carreras = consultar('carrera')
         categorias = [c[1] for c in consultar('categoria')[0]]

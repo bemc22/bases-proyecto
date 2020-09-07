@@ -14,5 +14,15 @@ def form2data(formulario):
     for i in request.form:
         columnas.append(i)
         values.append(request.form[i])
-        
+
     return columnas, values
+
+
+def input2dash(data):
+    data = data[0]
+    dash = [ ['nombre','nombre2'] ]
+
+    for i in data:
+        dash.append( [i[0] , i[1]])
+
+    return dash
