@@ -20,8 +20,8 @@ def inicio():
         return render_template('menu.html.j2')
     else:
         carreras = consultar('carrera')
-        print(carreras[0])
-        return render_template('login.html.j2', carreras= carreras[0])
+        categorias = [c[1] for c in consultar('categoria')[0]]
+        return render_template('login.html.j2', carreras= carreras[0], categorias=categorias)
 
 # Login
 
@@ -66,8 +66,8 @@ def registro():
 def asist():
     columnas, values = form2data(request.form)
     proced_vista('ludica',values[:2],'asistencia')
-    for i in range(1,6):
-        proced_vista('nota',[values[1], i, values[i+1] ],'inserta')
+    for i,v in enumerate(values[2:]):
+        proced_vista('nota',[values[1], i+1, v],'inserta')
     flash('Su asistencia ha sido guardada exitosamente', 'success')
     return redirect(url_for('inicio'))
 

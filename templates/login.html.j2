@@ -182,27 +182,12 @@
                   <label>Código Sesión:</label>
                   <input type="text" class="form-control" name="sesion">
                 </div>
+                {% for cat in categorias %}
                 <div class="form-group">
-                  <label for="cat1">Categoria 1</label>
-                  <input type="range" class="form-control-range" min="0" max="5" id="cat1" name="nota1">
+                  <label for="cat1">{{cat}}</label>
+                  <input type="range" class="form-control-range" min="0" max="5" id="cat1" name="{{cat}}">
                 </div>
-                <div class="form-group">
-                  <label for="cat2">Categoria 2</label>
-                  <input type="range" class="form-control-range" min="0" max="5" id="cat2" name="nota2">
-                </div>
-                <div class="form-group">
-                  <label for="cat3">Categoria 3</label>
-                  <input type="range" class="form-control-range" min="0" max="5" id="cat3" name="nota3">
-                </div>
-                <div class="form-group">
-                  <label for="cat4">Categoria 4</label>
-                  <input type="range" class="form-control-range" min="0" max="5" id="cat4" name="nota4">
-                </div>
-                <div class="form-group">
-                  <label for="cat5">Categoria 5</label>
-                  <input type="range" class="form-control-range" min="0" max="5" id="cat5" name="nota5">
-                </div>
-
+                {% endfor %}
                 <button type="submit" class="btn btn-outline-primary">
                   <i class="fas fa-paper-plane mr-2"></i> Enviar
                 </button>
