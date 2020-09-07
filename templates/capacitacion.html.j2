@@ -1,0 +1,144 @@
+{% extends 'header.html.j2' %}
+
+{% block contenido %}
+
+<div class="">
+  <div class="container p-2">
+    <div class="row">
+      <div class="col lg-12">
+        <div class="jumbotron p-3">
+          <h2>Capacitaciones Programagas: </h2>
+
+          {% if data|length == 0 %}
+            <div class="p-4 m-5 justify-content-between bg-light">
+              <h2> Aun no tiene capacitaciones programadas... </h2>
+              {% if session['jefe'] %}
+              <h3> Programa tu primera sesion ahora </h3>
+              <br>
+              <div class="row">
+                <div class="col text-center">
+                  <button type="button" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#mymodal">
+                    <i class="fas fa-calendar-plus mr-2"></i>
+                    Agendar
+                  </button>
+                </div>
+              </div>
+              {% else %}
+              <h3> Cuando algún jefe programe alguna capacitación el sistema será actualizado. </h3>
+              {% endif %}
+            </div>
+          {% else %}
+            <div class="d-flex p-2 mt-4 mb-3 justify-content-between bg-light">
+              <div class="input-group w-75 my-auto">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-search"></i></span>
+                </div>
+                <input type="text" aria-label="Buscar..." class="form-control" id="filter-input">
+                <select class="custom-select" id="filter-select">
+                  <option selected>Filtrar por...</option>
+                  {% for columna in nombres %}
+                  <option value = "{{loop.index0}}">{{columna|capitalize | replace('_', ' ')}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              {% if session['rol'] %}
+              <button type="button" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#mymodal">
+                <i class="fas fa-calendar-plus mr-2"></i>
+                Agendar
+              </button>
+              {% endif %}
+            </div>
+
+            <div class="d-flex bg-light">
+              <table class="table table-hover table-ligth">
+                <thead class="thead-dark">
+                  <tr>
+
+                    {% for columna in nombres %}
+                    <th>{{columna|capitalize | replace('_', ' ')}}</th>
+                    {% endfor %}
+
+                    <th style="text-align: center">Actions</th>
+                  </tr>
+
+                </thead>
+                <tbody>
+                  {% for row in data %}
+                  <tr>
+                    {% for item in row %}
+                    <td>{{item}}</td>
+                    {% endfor %}
+
+                    <td style="text-align: center">
+
+                      {% if session['jefe'] %}
+                      <button type="button" class="btn btn-outline-warning btn-xs">
+                        <i class="fas fa-address-book"></i>
+                      </button>
+                      {% else %}
+                      <button type="button" class="btn btn-success btn-xs">
+                        <i class="fas fa-check-square"></i>
+                      </button>
+                      {% endif %}
+
+                    </td>
+                  </tr>
+
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          {% endif %}
+
+        </div>
+
+        <div id="mymodal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">Programar Sesión</h4>
+              </div>
+              <div class="modal-body">
+                {#  {{url_for('insert')}}  #}
+                <form action="{{url_for('function_vista', nombre_vista='capacitacion', funcion='inserta')}}" method="POST">
+
+                  {% for col in nombres[1:-1] %}
+                  <div class="form-group">
+                    <label>{{col}}</label>
+                    {% if col == 'ludica' %}
+                    <select class="custom-select" name="{{col}}">
+                      <option selected>Selecciona una lúdica...</option>
+                      {% for lud in ludicas %}
+                        <option value="{{lud[0]}}">{{lud[1]}}</option>
+                      {% endfor %}
+                    </select>
+                    {% else %}
+                      {% if col == 'fecha' %}
+                        <input type="date" class="form-control" name="{{col}}" required="1">
+                      {% else %}
+                        <input type="text" class="form-control" name="{{col}}" required="1">
+                      {% endif %}
+                    {% endif %}
+                  </div>
+                  {% endfor %}
+
+                  <input type="hidden" name="jefe" value="{{session['id']}}">
+
+                  <div class="form-group">
+                    <button class="btn btn-primary" type="submit">Agendar</button>
+                  </div>
+
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

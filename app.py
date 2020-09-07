@@ -134,6 +134,13 @@ def curso_delete(nombre_tabla,id):
     flash('El curso ha sido eliminado exitosamente.', 'info')
     return redirect(url_for('curso' , nombre_tabla = nombre_tabla))
 
+# Capacitaciones:
+@app.route('/capacitaciones')
+def capacitaciones():
+    data , nombres =consultar('capacitaciones')
+    ludicas = foreign('ludica')
+    return render_template('capacitacion.html.j2', data=data, nombres=nombres, ludicas=ludicas)
+
 
 # Vistas:
 @app.route('/personal/<nombre_vista>')
@@ -187,7 +194,7 @@ def function_vista(nombre_vista, funcion):
         columnas, values = form2data(request.form)
         proced_vista(nombre_vista,values,funcion)
     flash(f'El registro ha sido {funcion}do exitosamente.', 'info')
-    return redirect(url_for('sesiones')) if nombre_vista=='sesion' else  redirect(url_for('vista' , nombre_vista = nombre_vista))
+    return redirect(url_for(f'{nombre_vista}es')) if nombre_vista in ['sesion', 'capacitacion'] else  redirect(url_for('vista' , nombre_vista = nombre_vista))
 
 @app.route('/delete/personal/<nombre_tabla>/<id>/<name_id>' , methods=['GET','POST'])
 def delete_vista(nombre_tabla, id,name_id):
