@@ -13,120 +13,108 @@
 
     <ul class="list-unstyled components">
 
-    <li class="actual">
-      <a href="{{url_for('inicio')}}">
-        <i class="fas fa-home"></i>
-        <span> Inicio </span>
-      </a>
-    </li>
-
-
-    {% if session['rol'] == 'admin' %}
-      <li>
-        <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-          <i class="fas fa-users"></i>
-          <span> Personal </span>
-        </a>
-        <ul class="collapse list-unstyled" id="homeSubmenu">
-          <li>
-            <a href="{{url_for('vista', nombre_vista='profesor')}}">
-              <i class="fas fa-user-tie"></i><span class="pl-2"> Profesores </span>
-            </a>
-          </li>
-          <li>
-            <a href="{{url_for('vista', nombre_vista='auxiliar')}}">
-              <i class="fas fa-user-astronaut"></i><span class="pl-2"> Auxiliares </span>
-            </a>
-          </li>
-        </ul>
-      </li>
-      <li>
-        <a href="{{url_for('tabla', nombre_tabla='materia')}}">
-          <i class="fas fa-paperclip"></i>
-          <span> Materias </span>
-        </a>
-      </li>
-      <li>
-        <a href="{{url_for('tabla', nombre_tabla='ludica')}}">
-          <i class="fas fa-dice"></i>
-          <span> Lúdicas </span>
-        </a>
-      </li>
-      <li>
-        <a href="{{url_for('sesiones')}}">
-          <i class="fas fa-video"></i>
-          <span> Sesiones </span>
-        </a>
-      </li>
-      <li>
-        <a href="{{url_for('capacitaciones')}}">
-          <i class="fas fa-chalkboard-teacher"></i>
-          <span> Capacitaciones </span>
-        </a>
-      </li>
-      <li>
-        <a href="#">
-          <i class="fas fa-chart-pie"></i>
-          <span> Reportes </span>
-        </a>
-      </li>
-    {% endif %}
-
-
-    {% if session['rol'] == 'auxiliar' %}
-      <li>
-        <a href="{{url_for('sesiones')}}">
-          <i class="fas fa-video"></i>
-          <span> Sesiones </span>
-        </a>
-      </li>
-      <li>
-        <a href="{{url_for('capacitaciones')}}">
-          <i class="fas fa-chalkboard-teacher"></i>
-          <span> Capacitaciones </span>
-        </a>
-      </li>
-      <li>
-        <a href="#">
-          <i class="fas fa-chart-pie"></i>
-          <span> Estadísticas </span>
-        </a>
-      </li>
-      <li>
-        <a href="{{url_for('tabla', nombre_tabla='ludica')}}">
-          <i class="fas fa-dice"></i>
-          <span> Lecturas Lúdicas </span>
-        </a>
-      </li>
-    {% endif %}
-
-    {% if session['rol'] == 'profesor' %}
-      <li>
-        <a href="{{url_for('curso', nombre_tabla='materia')}}">
-          <i class="fas fa-paperclip"></i>
-          <span> Mis materias </span>
-        </a>
-      </li>
-      <li>
-        <a href="{{url_for('curso', nombre_tabla='grupo')}}">
-          <i class="fas fa-list-alt"></i>
-          <span> Mis Grupos </span>
-        </a>
-      </li>
-      <li>
-        <a href="{{url_for('sesiones')}}">
-          <i class="fas fa-video"></i>
-          <span> Mis sesiones </span>
-        </a>
-      </li>
-      <li>
-        <a href="{{url_for('tabla', nombre_tabla='ludica')}}">
-          <i class="fas fa-dice"></i>
-          <span> Catálogo Lúdicas </span>
+      <li class="actual">
+        <a href="{{url_for('inicio')}}">
+          <i class="fas fa-home"></i>
+          <span> Inicio </span>
         </a>
       </li>
 
-    {% endif %}
+
+      {% if session['rol'] == 'admin' %}
+        <li>
+          <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+            <i class="fas fa-users"></i>
+            <span> Personal </span>
+          </a>
+          <ul class="collapse list-unstyled" id="homeSubmenu">
+            <li>
+              <a href="{{url_for('vista', nombre_vista='profesor')}}">
+                <i class="fas fa-user-tie"></i><span class="pl-2"> Profesores </span>
+              </a>
+            </li>
+            <li>
+              <a href="{{url_for('vista', nombre_vista='auxiliar')}}">
+                <i class="fas fa-user-astronaut"></i><span class="pl-2"> Auxiliares </span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="{{url_for('tabla', nombre_tabla='materia')}}">
+            <i class="fas fa-paperclip"></i>
+            <span> Materias </span>
+          </a>
+        </li>
+        <li>
+          <a href="{{url_for('tabla', nombre_tabla='ludica')}}">
+            <i class="fas fa-dice"></i>
+            <span> Lúdicas </span>
+          </a>
+        </li>
+        <li>
+          <a href="{{url_for('sesiones')}}">
+            <i class="fas fa-video"></i>
+            <span> Sesiones </span>
+          </a>
+        </li>
+        <li>
+          <a href="{{url_for('capacitaciones')}}">
+            <i class="fas fa-chalkboard-teacher"></i>
+            <span> Capacitaciones </span>
+          </a>
+        </li>
+      {% endif %}
+
+
+      {% if session['rol'] == 'auxiliar' %}
+        <li>
+          <a href="{{url_for('sesiones')}}">
+            <i class="fas fa-video"></i>
+            <span> Sesiones </span>
+          </a>
+        </li>
+        <li>
+          <a href="{{url_for('capacitaciones')}}">
+            <i class="fas fa-chalkboard-teacher"></i>
+            <span> Capacitaciones </span>
+          </a>
+        </li>
+        <li>
+          <a href="{{url_for('tabla', nombre_tabla='ludica')}}">
+            <i class="fas fa-dice"></i>
+            <span> Lecturas Lúdicas </span>
+          </a>
+        </li>
+      {% endif %}
+
+      {% if session['rol'] == 'profesor' %}
+        <li>
+          <a href="{{url_for('curso', nombre_tabla='materia')}}">
+            <i class="fas fa-paperclip"></i>
+            <span> Mis materias </span>
+          </a>
+        </li>
+        <li>
+          <a href="{{url_for('curso', nombre_tabla='grupo')}}">
+            <i class="fas fa-list-alt"></i>
+            <span> Mis Grupos </span>
+          </a>
+        </li>
+        <li>
+          <a href="{{url_for('sesiones')}}">
+            <i class="fas fa-video"></i>
+            <span> Mis sesiones </span>
+          </a>
+        </li>
+        <li>
+          <a href="{{url_for('tabla', nombre_tabla='ludica')}}">
+            <i class="fas fa-dice"></i>
+            <span> Catálogo Lúdicas </span>
+          </a>
+        </li>
+
+      {% endif %}
 
       <li>
         <a href="#">
