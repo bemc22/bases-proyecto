@@ -6,6 +6,9 @@
   <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="{{url_for('static', filename='./css/style.css')}}">
   <link rel="shortcut icon" href="{{ url_for('static', filename='g.ico') }}">
+
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script src="{{url_for('static', filename='./js/test_graph.js')}}" charset="utf-8"></script>
   <meta charset="UTF-8">
   <title>{% block title %} {% endblock %} </title>
 </head>
@@ -19,6 +22,7 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
   <script src="{{url_for('static', filename='./js/animate.js')}}" charset="utf-8"></script>
 
+
   {% with mensajes = get_flashed_messages(with_categories=true) %}
     {% if mensajes %}
       {% for cat, msg in mensajes %}
@@ -28,6 +32,6 @@
       {% endfor %}
     {% endif %}
   {% endwith %}
-  
+
 </body>
 </html>
