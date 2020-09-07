@@ -41,7 +41,7 @@
                   {% endfor %}
                 </select>
               </div>
-              {% if session['rol'] %}
+              {% if session['jefe'] %}
               <button type="button" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#mymodal">
                 <i class="fas fa-calendar-plus mr-2"></i>
                 Agendar
@@ -58,7 +58,9 @@
                     <th>{{columna|capitalize | replace('_', ' ')}}</th>
                     {% endfor %}
 
+                    {% if session['rol'] == "auxiliar" %}
                     <th style="text-align: center">Actions</th>
+                    {% endif %}
                   </tr>
 
                 </thead>
@@ -68,6 +70,8 @@
                     {% for item in row %}
                     <td>{{item}}</td>
                     {% endfor %}
+
+                    {% if session['rol'] == "auxiliar" %}
 
                     <td style="text-align: center">
 
@@ -86,6 +90,9 @@
                       {% endif %}
 
                     </td>
+
+                    {% endif %}
+
                   </tr>
 
                   {% endfor %}
