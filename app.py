@@ -83,11 +83,13 @@ def insert(nombre_tabla):
     if request.method == 'POST':
         columnas, values = form2data(request.form)
         insertar(nombre_tabla,columnas,values)
+        flash('El registro ha sido guardado exitosamente.', 'info')
     return redirect(url_for('tabla' , nombre_tabla = nombre_tabla))
 
 @app.route('/delete/<nombre_tabla>/<id>/<name_id>' , methods=['GET','POST'])
 def delete(nombre_tabla, id,name_id):
     eliminar(nombre_tabla,id,name_id)
+    flash('El registro ha sido eliminado exitosamente.', 'info')
     return redirect(url_for('tabla' , nombre_tabla = nombre_tabla))
 
 @app.route('/update/<nombre_tabla>' , methods=['GET','POST'])
@@ -95,6 +97,7 @@ def update(nombre_tabla):
     if request.method == 'POST':
         columnas, values = form2data(request.form)
         editar(nombre_tabla,columnas,values)
+        flash('El registro ha sido editado exitosamente.', 'info')
     return redirect(url_for('tabla' , nombre_tabla = nombre_tabla))
 
 
@@ -114,12 +117,13 @@ def curso(nombre_tabla):
 
 @app.route('/curso/insert/<nombre_tabla>', methods=['POST'])
 def function_curso(nombre_tabla):
-        if request.method == 'POST':
-            print(request.form)
-            columnas , values = form2data(request.form)
-            values = [str(session['id'])] + values
-            proced_vista('curso_' + nombre_tabla, values , 'inserta')
-            return redirect(url_for('curso' , nombre_tabla = nombre_tabla))
+    if request.method == 'POST':
+        print(request.form)
+        columnas , values = form2data(request.form)
+        values = [str(session['id'])] + values
+        proced_vista('curso_' + nombre_tabla, values , 'inserta')
+        flash('El curso ha sido insertado exitosamente.', 'info')
+        return redirect(url_for('curso' , nombre_tabla = nombre_tabla))
 
 @app.route('/curso/delete/<nombre_tabla>/<id>', methods=['GET','POST'])
 def curso_delete(nombre_tabla,id):
@@ -127,7 +131,7 @@ def curso_delete(nombre_tabla,id):
         eliminar('materia_profesor', id, 'mp_id' )
     elif nombre_tabla == 'grupo':
         eliminar('grupo' , id , 'grupo_id')
-
+    flash('El curso ha sido eliminado exitosamente.', 'info')
     return redirect(url_for('curso' , nombre_tabla = nombre_tabla))
 
 
@@ -172,9 +176,8 @@ def sesiones():
 def asignar():
     if request.method == 'POST':
         columnas, values = form2data(request.form)
-        print(columnas)
-        print(values)
         insertar('auxiliar_sesion',columnas,values)
+        flash('El auxiliar ha sido guardado exitosamente.', 'info')
     return redirect(url_for('sesiones'))
 
 
@@ -183,11 +186,13 @@ def function_vista(nombre_vista, funcion):
     if request.method == 'POST':
         columnas, values = form2data(request.form)
         proced_vista(nombre_vista,values,funcion)
+    flash(f'El registro ha sido {funcion}do exitosamente.', 'info')
     return redirect(url_for('sesiones')) if nombre_vista=='sesion' else  redirect(url_for('vista' , nombre_vista = nombre_vista))
 
 @app.route('/delete/personal/<nombre_tabla>/<id>/<name_id>' , methods=['GET','POST'])
 def delete_vista(nombre_tabla, id,name_id):
     eliminar(nombre_tabla,id,name_id)
+    flash('El registro ha sido eliminado exitosamente.', 'info')
     return redirect(url_for('vista' , nombre_vista = nombre_tabla))
 
 
