@@ -76,9 +76,13 @@
                         <i class="fas fa-address-book"></i>
                       </button>
                       {% else %}
-                      <button type="button" class="btn btn-success btn-xs">
-                        <i class="fas fa-check-square"></i>
-                      </button>
+                      <form action="{{url_for('insert', nombre_tabla='capacitacion_auxiliar')}}" method="post">
+                        <input type="hidden" name="capacitacion_id" value="{{row.0}}">
+                        <input type="hidden" name="auxiliar_id" value="{{session['id']}}">
+                        <button type="submit" class="btn btn-success btn-xs">
+                          <i class="fas fa-check-square"></i>
+                        </button>
+                      </form>
                       {% endif %}
 
                     </td>

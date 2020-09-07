@@ -4,9 +4,11 @@
 
 {% block contenido %}
 
-<h1> {% if session['jefe'] %}
-      Hola Jefe
-    {% endif %}
+<h1>
+  Cuerpo 
+  {% if session['jefe'] %}
+  Hola Jefe
+  {% endif %}
 </h1>
 
 {% endblock %}

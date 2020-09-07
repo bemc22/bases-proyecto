@@ -88,7 +88,7 @@ def insert(nombre_tabla):
             columnas, values = form2data(request.form)
             insertar(nombre_tabla,columnas,values)
             flash('El registro ha sido guardado exitosamente.', 'info')
-        return redirect(url_for('tabla' , nombre_tabla = nombre_tabla))
+        return redirect(url_for('capacitaciones')) if nombre_tabla=='capacitacion_auxiliar' else redirect(url_for('tabla' , nombre_tabla = nombre_tabla))
     else:
         return redirect(url_for('inicio'))
 
