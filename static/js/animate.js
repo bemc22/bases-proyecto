@@ -33,7 +33,7 @@ $(document).ready(function () {
       ]);
     });
 
-    //
+    // Para deshabilitar el boton de enviar en caso que no acepte terminos y condiciones
     $('#tyc').change(function () {
       if(this.checked){
         $('#register-button').removeAttr("disabled");
@@ -46,6 +46,14 @@ $(document).ready(function () {
     // Para el slidebar
     $('#sidebarCollapse').off('click').on('click', function () {
       $('#sidebar').toggleClass('active');
+    });
+
+    // Para cambiar el sombreado de la página
+    $('.components li').each(function (){
+      if($(this).find('a').attr("href") == window.location.pathname){
+        $(this).addClass('actual');
+        console.log('Encontro uno.');
+      }
     });
 
     // Para filtrar la tabla

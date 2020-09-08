@@ -5,23 +5,45 @@
 {% block contenido %}
 
 <div class="">
-
-
-  <div class="container">
+  <div class="container p-2">
     <div class="row">
       <div class="col lg-12">
         <div class="jumbotron p-3">
-          <h2>CRUD Tabla <b>{{nombre_tabla|capitalize}} </b>
-            <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#mymodal">Agregar</button></h2>
-          <br>
-          <table class="table table-hover table-ligth">
+          <h2><b>{{nombre_tabla|capitalize}} </b></h2>
+
+          <div class="d-flex p-2 mt-4 mb-3 justify-content-between bg-light">
+            <div class="input-group w-75">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-search"></i></span>
+              </div>
+              <input type="text" aria-label="Buscar..." class="form-control" id="filter-input">
+              <select class="custom-select" id="filter-select">
+                <option selected>Filtrar por...</option>
+                {% for columna in nombres %}
+                <option value="{{loop.index0}}">{{columna|capitalize | replace('_', ' ')}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            {% if session['rol'] == "admin" %}
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#mymodal">
+              <i class="fas fa-plus-square mr-2"></i>
+              Agregar
+            </button>
+            {% endif %}
+          </div>
+
+          <div class="d-flex bg-light">
+            <table class="table table-hover table-ligth">
             <thead class="thead-dark">
               <tr>
                 {% for columna in nombres %}
                 <th>{{columna|capitalize}}</th>
                 {% endfor %}
 
+                {% if session['rol'] == "admin" %}
                 <th style="text-align: center">Actions</th>
+                {% endif %}
+
               </tr>
 
             </thead>
@@ -33,6 +55,7 @@
                 <td>{{item}}</td>
                 {% endfor %}
 
+                {% if session['rol'] == "admin" %}
                 <td style="text-align: center">
 
                   <a href="" class="btn btn-outline-primary btn-xs" data-toggle="modal" data-target="#modaledit{{row.0}}">Editar</a>
@@ -63,10 +86,12 @@
                       </div>
                     </div>
                   </div>
-
                 </td>
+                {% endif %}
+
               </tr>
 
+              {% if session['rol'] == "admin" %}
               <div id="modaledit{{row.0}}" class="modal fade" role="dialog">
                 <div class="modal-dialog">
                   <div class="modal-content">
@@ -94,11 +119,14 @@
                   </div>
                 </div>
               </div>
+              {% endif %}
 
 
               {% endfor %}
             </tbody>
           </table>
+            
+          </div>
         </div>
 
 
