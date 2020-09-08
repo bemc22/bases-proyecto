@@ -19,10 +19,15 @@ def form2data(formulario):
 
 
 def input2dash(data):
+    dashboard = dict()
+    names = data[1]
     data = data[0]
-    dash = [ ['nombre','nombre2'] ]
+    dash = [ names  ]
 
     for i in data:
         dash.append( [i[0] , i[1]])
 
-    return dash
+    dashboard['data'] = dash
+    dashboard['names'] = names
+
+    return dashboard

@@ -17,12 +17,21 @@ db = SQLAlchemy(app)
 @app.route('/')
 def inicio():
     if "rol" in session:
+        valoracion = consultar('dash_admin')
+        valoracion = input2dash(valoracion)
 
-        dash = consultar('dash_admin')
-        dash = input2dash(dash)
+        cantidad_ludicas = consultar('dash_ludicas')
+        cantidad_ludicas = input2dash(cantidad_ludicas)
 
-        print(dash)
-        return render_template('menu.html.j2' , dash= dash)
+        part_auxiliar = consultar('dash_auxiliar')
+        part_auxiliar = input2dash(part_auxiliar)
+
+        if session['rol'] == 'admin':
+            return render_template('menu.html.j2' , dashboard= [valoracion , cantidad_ludicas, part_auxiliar])
+        elif session['rol'] == 'auxiliar':
+            return render_template('menu.html.j2' , dashboard= [valoracion, cantidad_ludicas])
+        else:
+            return render_template('menu.html.j2' , dashboard= None)
     else:
         carreras = consultar('carrera')
         categorias = [c[1] for c in consultar('categoria')[0]]

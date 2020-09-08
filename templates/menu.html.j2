@@ -5,40 +5,61 @@
 {% block contenido %}
 
 <h1>
-  Cuerpo
+  Dashboards
+
+  <br>
+
   {% if session['jefe'] %}
   Hola Jefe
   {% endif %}
 </h1>
 
- {% set prueba = 'pepito' %}
+
+<table>
+  <thead>
+    <tr>
+      {% for item in dashboard %}
+      <td>
+        <div id='dashboard{{loop.index}}' style="margin:10px"></div>
+      </td>
+      {% endfor %}
+    </tr>
+  </thead>
+</table>
+
+
+
+
 <script type="text/javascript">
+{% for item in dashboard %}
+  {% set dash = item %}
   google.charts.setOnLoadCallback(function drawStuff(){
-        var data = new google.visualization.arrayToDataTable({{dash}});
-        var options = {
-          width: 400,
-          height: 400,
-          legend: { position: 'none' },
-          chart: {
-            title: 'Ludicas',
-            subtitle: 'popularity by percentage' },
-          axes: {
-            x: {
-              0: { side: 'top', label: 'White to move'} // Top x-axis.
-            }
-          },
-          bar: { groupWidth: "90%" }
-        };
-        var chart = new google.charts.Bar(document.getElementById('{{prueba}}'));
-        // Convert the Classic options to Material options.
-        chart.draw(data, google.charts.Bar.convertOptions(options));
-      });
+      var data = new google.visualization.arrayToDataTable({{dash['data']}});
+      var options = {
+        width: 400,
+        height: 400,
+        legend: { position: 'none' },
+        chart: {
+          title: "{{dash['names'][0] | capitalize}}",
+          subtitle: "{{dash['names'][1] | capitalize}}"
+         },
 
+         hAxis: {
+           title: 'Hello',
+           textStyle: {
+             color: 'white'
+           }
+         },
+
+
+        bar: { groupWidth: "90%" }
+      };
+      var chart = new google.charts.Bar(document.getElementById('dashboard{{loop.index}}'));
+      // Convert the Classic options to Material options.
+      chart.draw(data, google.charts.Bar.convertOptions(options));
+    });
+{% endfor %}
 </script>
-
-<div id='{{prueba}}'>
-
-</div>
 
 
 {% endblock %}
