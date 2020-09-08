@@ -17,7 +17,6 @@ def form2data(formulario):
 
     return columnas, values
 
-
 def input2dash(data):
     dashboard = dict()
     names = data[1]
@@ -31,3 +30,9 @@ def input2dash(data):
     dashboard['names'] = names
 
     return dashboard
+
+
+def list2dic(lista):
+    claves = sorted(list(set([i[0] for i in lista])))
+    dic = {c:[i[1] for i in lista if i[0] == c] for c in claves}
+    return dict(dic)

@@ -12,7 +12,7 @@
           {% if data|length == 0 %}
             <div class="p-4 m-5 justify-content-between bg-light">
               <h2> Aun no tiene sesiones programadas... </h2>
-              {% if session['rol'] == profesor %}
+              {% if session['rol'] == "profesor" %}
               <h3> Programa tu primera sesion ahora </h3>
               <br>
               <div class="row">
@@ -45,7 +45,7 @@
                   {% endfor %}
                 </select>
               </div>
-              {% if session['rol'] == profesor %}
+              {% if session['rol'] == "profesor" %}
               <button type="button" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#mymodal">
                 <i class="fas fa-calendar-plus mr-2"></i>
                 Agendar
@@ -58,17 +58,9 @@
                 <thead class="thead-dark">
                   <tr>
 
-                    {% if session['id'] == admin %}
-                    {% for columna in nombres[:-1] %}
-                    <th>{{columna|capitalize | replace('_', ' ')}}</th>
-                    {% endfor %}
-
-                    {% else %}
-
                     {% for columna in nombres %}
                     <th>{{columna|capitalize | replace('_', ' ')}}</th>
                     {% endfor %}
-                    {% endif %}
 
                     <th style="text-align: center">Actions</th>
                   </tr>
@@ -77,19 +69,14 @@
                 <tbody>
                   {% for row in data %}
                   <tr>
-                    {% if session['id'] == admin %}
-                      {% for item in row[:-1] %}
-                      <td>{{item}}</td>
-                      {% endfor %}
-                    {% else %}
+
                     {% for item in row %}
                     <td>{{item}}</td>
                     {% endfor %}
-                    {% endif %}
 
                     <td style="text-align: center">
 
-                      <button type="button" class="btn btn-outline-warning btn-xs">
+                      <button type="button" class="btn btn-outline-warning btn-xs"  data-toggle="modal" data-target="#asistencia{{row.0}}">
                         <i class="fas fa-address-book"></i>
                       </button>
 
@@ -98,6 +85,47 @@
                             <i class="fas fa-user-plus"></i>
                           </button>
                       {% endif %}
+
+                      <div class="modal fade" id="asistencia{{row.0}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="">Asistencia Registrada a la capacitación...</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <h4>Auxiliares encargados: </h4>
+                              {% if ayudantes[row.0]|length != 0 %}
+                              <ul class="list-group">
+                                {% for ayu in ayudantes[row.0] %}
+                                <li class="list-group-item">{{ ayu }}</li>
+                                {% endfor %}
+                              </ul>
+                              {% else %}
+                              <h6>Aun no se han asignado auxiliares a esta sesión.</h6>
+                              {% endif %}
+
+                              <h4>Estudiantes registrados: </h4>
+                              {% if asistencia[row.0]|length != 0 %}
+                              <ul class="list-group">
+                                {% for est in asistencia[row.0] %}
+                                <li class="list-group-item">{{ est }}</li>
+                                {% endfor %}
+                              </ul>
+                              {% else %}
+                              <h6>Aun no se han registrado estudiantes en la sesión.</h6>
+                              {% endif %}
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancelar</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+
                     </td>
                   </tr>
 
@@ -112,7 +140,7 @@
                           {#  {{url_for('insert')}}  #}
 
                           <form action="{{url_for('asignar')}}" method="POST">
-                            <input type="hidden" name="{{nombres[-1]}}" value="{{row[-1]}}">
+                            <input type="hidden" name="{{nombres[0]}}" value="{{row[0]}}">
 
                             <label for="">Auxiliar</label>
 
@@ -154,7 +182,7 @@
                 {#  {{url_for('insert')}}  #}
                 <form action="{{url_for('function_vista', nombre_vista='sesion', funcion='inserta')}}" method="POST">
 
-                  {% for col in nombres %}
+                  {% for col in nombres[1:] %}
                   <div class="form-group">
                     <label>{{col}}</label>
                     {% if col == 'ludica' %}

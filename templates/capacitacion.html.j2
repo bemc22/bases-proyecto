@@ -76,9 +76,39 @@
                     <td style="text-align: center">
 
                       {% if session['jefe'] %}
-                      <button type="button" class="btn btn-outline-warning btn-xs">
+                      <button type="button" class="btn btn-outline-warning btn-xs" data-toggle="modal" data-target="#asistencia{{row.0}}">
                         <i class="fas fa-address-book"></i>
                       </button>
+
+                      <div class="modal fade" id="asistencia{{row.0}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="">Asistencia Registrada a la capacitación...</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              {% if asistencia[row.0]|length != 0 %}
+                              <ul class="list-group">
+                                {% for est in asistencia[row.0] %}
+                                <li class="list-group-item">{{ est }}</li>
+                                {% endfor %}
+                              </ul>
+                              {% else %}
+                              <h6>Aun no se han registrado estudiantes en la capacitación.</h6>
+                              {% endif %}
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancelar</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+
+
                       {% else %}
                       <form action="{{url_for('insert', nombre_tabla='capacitacion_auxiliar')}}" method="post">
                         <input type="hidden" name="capacitacion_id" value="{{row.0}}">

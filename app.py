@@ -174,7 +174,9 @@ def capacitaciones():
     if 'rol' in session:
         data , nombres =consultar('capacitaciones')
         ludicas = foreign('ludica')
-        return render_template('capacitacion.html.j2', data=data, nombres=nombres, ludicas=ludicas)
+        asistencia = consultar('asistencia_auxiliares')[0]
+        asistencia = list2dic(asistencia)
+        return render_template('capacitacion.html.j2', data=data, nombres=nombres, ludicas=ludicas, asistencia=asistencia)
     else:
         return redirect(url_for('inicio'))
 
@@ -201,20 +203,35 @@ def vista(nombre_vista):
 def sesiones():
     if 'rol' in session:
         if session['rol'] == 'admin':
+            asistencia = consultar('asistencia_estudiantes')[0]
+            ayudantes = consultar('ayuda_auxiliares')[0]
+            asistencia = list2dic(asistencia)
+            ayudantes = list2dic(ayudantes)
             data , nombres =consultar('sesiones_'+session['rol'])
             auxiliares = consultar('ver_auxiliar')
+
+            return render_template('sesion.html.j2' , data=data, nombres=nombres, auxiliares=auxiliares, asistencia=asistencia, ayudantes=ayudantes)
         else:
             data , nombres =consultar('sesiones_'+session['rol'], session['rol']+'_id', session['id'])
-        if session['rol'] == "profesor":
-            ludicas = foreign('ludica')
-            mp = foreign('materia_profesor', 'profesor_id', session['id'], ['*'])
-            grupos = foreign('grupo', 'mp_id', [m[0] for m in mp])
-            return render_template('sesion.html.j2' , data=[reg[:-1] for reg in data], nombres=nombres[:-1], ludicas=ludicas, grupos=grupos)
-        elif session['rol'] == "auxiliar":
-            return render_template('sesion.html.j2' , data=[reg[:-1] for reg in data], nombres=nombres[:-1])
-        else:
+            if session['rol'] == "profesor":
+                # Consultas neccesarias para el input
+                ludicas = foreign('ludica')
+                mp = foreign('materia_profesor', 'profesor_id', session['id'], ['*'])
+                grupos = foreign('grupo', 'mp_id', [m[0] for m in mp])
 
-            return render_template('sesion.html.j2' , data=data, nombres=nombres , auxiliares=auxiliares)
+                # Consultas necesarias para la asistencia
+                asistencia = foreign('asistencia_estudiantes', 'profesor_id', [session['id']], ['*'])
+                asistencia = list2dic(asistencia)
+                ayudantes = foreign('ayuda_auxiliares', 'profesor_id', [session['id']], ['*'])
+                ayudantes = list2dic(ayudantes)
+                return render_template('sesion.html.j2' , data=[reg[:-1] for reg in data], nombres=nombres[:-1], ludicas=ludicas, grupos=grupos, asistencia=asistencia, ayudantes=ayudantes)
+            else:
+                asistencia = consultar('asistencia_estudiantes')[0]
+                ayudantes = consultar('ayuda_auxiliares')[0]
+                asistencia = list2dic(asistencia)
+                ayudantes = list2dic(ayudantes)
+                print(nombres)
+                return render_template('sesion.html.j2' , data=[reg[:-1] for reg in data], nombres=nombres[:-1], asistencia=asistencia, ayudantes=ayudantes)
     else:
         return redirect(url_for('inicio'))
 
