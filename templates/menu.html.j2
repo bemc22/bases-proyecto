@@ -3,30 +3,27 @@
 {% block title %} Galea: Inicio {% endblock %}
 
 {% block contenido %}
+<div class="container-fluid bg-light p-3">
+  <h1 class="text-center">
 
-<h1>
-  Dashboards
+    Estadísticas <i class="fas fa-chart-bar ml-2"></i>
+  </h1>
 
-  <br>
-
-  {% if session['jefe'] %}
-  Hola Jefe
+  {% if dashboard %}
+  <table class="mx-auto">
+    <thead>
+      <tr>
+        {% for item in dashboard %}
+        <td>
+          <div id='dashboard{{loop.index}}' style="margin:10px"></div>
+        </td>
+        {% endfor %}
+      </tr>
+    </thead>
+  </table>
   {% endif %}
-</h1>
 
-{% if dashboard %}
-<table>
-  <thead>
-    <tr>
-      {% for item in dashboard %}
-      <td>
-        <div id='dashboard{{loop.index}}' style="margin:10px"></div>
-      </td>
-      {% endfor %}
-    </tr>
-  </thead>
-</table>
-{% endif %}
+</div>
 
 
 <script type="text/javascript">
@@ -36,8 +33,8 @@ google.charts.load('current', {'packages':['bar']});
   google.charts.setOnLoadCallback(function drawStuff(){
       var data = new google.visualization.arrayToDataTable({{dash['data']}});
       var options = {
-        width: 400,
-        height: 400,
+        width: 360,
+        height: 360,
         legend: { position: 'none' },
         chart: {
           title: "{{dash['names'][0] | capitalize}}",
