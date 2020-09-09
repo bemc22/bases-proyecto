@@ -31,7 +31,7 @@ def inicio():
         elif session['rol'] == 'auxiliar':
             return render_template('menu.html.j2' , dashboard= [valoracion, cantidad_ludicas])
         else:
-            return render_template('menu.html.j2' , dashboard= None)
+            return render_template('menu.html.j2')
     else:
         carreras = consultar('carrera')
         categorias = [c[1] for c in consultar('categoria')[0]]
