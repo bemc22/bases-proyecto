@@ -98,9 +98,9 @@
                             <div class="modal-body">
                               <h4>Auxiliares encargados: </h4>
                               {% if ayudantes[row.0]|length != 0 %}
-                              <ul class="list-group">
+                              <ul class="list-group" style="text-align:left">
                                 {% for ayu in ayudantes[row.0] %}
-                                <li class="list-group-item">{{ ayu }}</li>
+                                <li class="list-group-item" > <p style="margin-left:120px; margin-bottom:0px;">{{ ayu }}</p></li>
                                 {% endfor %}
                               </ul>
                               {% else %}
@@ -109,9 +109,9 @@
 
                               <h4 class="mt-2">Estudiantes registrados: </h4>
                               {% if asistencia[row.0]|length != 0 %}
-                              <ul class="list-group">
+                              <ul class="list-group" style="text-align:left">
                                 {% for est in asistencia[row.0] %}
-                                <li class="list-group-item">{{ est }}</li>
+                                <li class="list-group-item"><p style="margin-left:120px; margin-bottom:0px;">{{ est }}</p></li>
                                 {% endfor %}
                               </ul>
                               {% else %}
