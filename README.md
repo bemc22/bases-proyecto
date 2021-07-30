@@ -1,15 +1,16 @@
 # bases-proyecto
-Buenas tardes profe.
 
-El archivo que ejecuta el servidor es "app.py".
+**Run server**
+```
+python app.py
+```
 
-Para poder visualizar correctamente el proyecto, es necesario instalar las siguientes librerias:
+**Requirements**
+```
 Flask
 SQLAlchemy
 Flask-SQLAlchemy
 psycop2
-
-Al momento de instalarlas, al ejecutar pip freeze le debería mostrar una salida más o menos similar a:
 click==7.1.2
 Flask==1.1.2
 Flask-SQLAlchemy==2.4.4
@@ -19,7 +20,4 @@ MarkupSafe==1.1.1
 psycopg2==2.8.5
 SQLAlchemy==1.3.19
 Werkzeug==1.0.1
-
-Respecto a la base de datos, nosotros la manejamos online, por lo que no es necesario que haga la instalación 
-en postgres local. Desde el app.py realiza la conexión.
-
+```
